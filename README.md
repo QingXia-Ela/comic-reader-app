@@ -1,79 +1,27 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Hentai Comic Reader App
 
-# Getting Started
+一个简易图片集合阅读器
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+**还在开发中！还在开发中！**
 
-## Step 1: Start the Metro Server
+## License
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+[MIT](./LICENSE)
 
-To start Metro, run the following command from the _root_ of your React Native project:
+## 使用规则 & 免责声明
 
-```bash
-# using npm
-npm start
+### 使用规则
 
-# OR using Yarn
-yarn start
-```
+- 本项目仅供学习交流使用，**不允许将项目扩展后进行分发，仅允许私人使用**。
+- 不要在任何其他包括以下但不限于 `有关漫画的社区 / 开发社区` 内, 发布有关本项目的链接或信息。
 
-## Step 2: Start your Application
+拓展包括但是不限于以下内容
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+- 使用本软件进行继续开发形成的软件。
+- 引入本软件部分内容为依赖/参考本软件/使用本软件内代码的同时, 包含本软件内一致内容或功能的软件。
+- 直接对本软件进行打包发布。
 
-### For Android
+### 免责声明
 
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- 作者仅分享编程技术, 不分发软件, 不对分发软件承担任何后果。 因传播或下载造成的法律问题或纠纷, 需行为人自行承担, 请您遵守当地法以及副本接受方(社区或人)所在地区的法律。
+- 如有其余纠纷，本仓库概不负责，当您使用本仓库代码时即代表您同意以上所有条件。

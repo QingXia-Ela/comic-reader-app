@@ -8,10 +8,9 @@ interface BasicLayoutProps extends PropsWithChildren { }
 const BasicLayout: FunctionComponent<BasicLayoutProps> = ({ children }) => {
   return (
     <View style={styles.viewWrapper}>
-      <RouterProvider router={router} />
-      {/* <NativeRouter>
-        <View style={styles.viewInner}>{children}</View>
-      </NativeRouter> */}
+      <View style={styles.viewInner}>
+        <RouterProvider router={router} />
+      </View>
       <View style={styles.viewGuide}>
         <Text>test</Text>
       </View>
