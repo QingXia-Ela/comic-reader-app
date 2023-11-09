@@ -1,20 +1,41 @@
 import router from '../../router';
 import { FunctionComponent, PropsWithChildren } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { NativeRouter, RouterProvider } from 'react-router-native';
+import {
+  RouterProvider,
+  Link,
+  NativeRouter,
+  Routes,
+  Route,
+} from 'react-router-native';
 
 interface BasicLayoutProps extends PropsWithChildren { }
 
 const BasicLayout: FunctionComponent<BasicLayoutProps> = ({ children }) => {
   return (
-    <View style={styles.viewWrapper}>
-      <View style={styles.viewInner}>
-        <RouterProvider router={router} />
+    <NativeRouter>
+      <View style={styles.viewWrapper}>
+        <View style={styles.viewInner}>
+          <Routes>
+            <Route path="/" element={<Text>Index</Text>}></Route>
+            <Route path="/comic/:id" element={<Text>Comic</Text>}></Route>
+          </Routes>
+          {/* <RouterProvider router={router} /> */}
+        </View>
+        <View style={styles.viewGuide}>
+          <View>
+            <Link to="/comic/998543">
+              <Text>Comic</Text>
+            </Link>
+          </View>
+          <View>
+            <Link to="/">
+              <Text>Index</Text>
+            </Link>
+          </View>
+        </View>
       </View>
-      <View style={styles.viewGuide}>
-        <Text>test</Text>
-      </View>
-    </View>
+    </NativeRouter>
   );
 };
 
