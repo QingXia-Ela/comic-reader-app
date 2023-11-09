@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native';
 
 const S = StyleSheet.create({
   w_full: {
@@ -8,23 +8,23 @@ const S = StyleSheet.create({
     height: '100%',
   },
   text_24: {
-    fontSize: 24
+    fontSize: 24,
   },
   flex: {
     display: 'flex',
   },
   flex_row: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   flex_col: {
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   items_center: {
-    alignItems: 'center'
+    alignItems: 'center',
   },
   justify_center: {
-    justifyContent: 'center'
-  }
-})
+    justifyContent: 'center',
+  },
+});
 
-export default S
+export default S;

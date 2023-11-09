@@ -32,12 +32,10 @@ function App(): JSX.Element {
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    fontSize: 24
+    fontSize: 24,
   };
 
-  return (
-    <BasicLayout />
-  );
+  return <BasicLayout />;
 }
 
 const styles = StyleSheet.create({

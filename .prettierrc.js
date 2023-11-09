@@ -1,4 +1,6 @@
 module.exports = {
   "singleQuote": true,
-  "trailingComma": "all"
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "bracketSameLine": true,
 };
