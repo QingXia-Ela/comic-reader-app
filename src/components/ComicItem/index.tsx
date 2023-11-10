@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     height: 220,
     backgroundColor: '#1f1f1f',
     padding: 8,
-    marginBottom: 6,
+    marginBottom: 15,
   },
   leftImgWrapper: {
     width: '25%',
