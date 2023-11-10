@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Outlet } from 'react-router-native';
 import BottomLink from './components/BottomLink';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import ComicItem from '../../components/ComicItem';
 
 interface BasicLayoutProps extends PropsWithChildren {
   navigation: NavigationProp<ReactNavigation.RootParamList>;
@@ -11,7 +12,9 @@ interface BasicLayoutProps extends PropsWithChildren {
 const BasicLayout: FunctionComponent<BasicLayoutProps> = ({ navigation }) => {
   return (
     <View style={styles.viewWrapper}>
-      <View style={styles.viewInner}></View>
+      <View style={styles.viewInner}>
+        <ComicItem imgPath={require('../../assets/images/00002.jpg')} />
+      </View>
       <View style={styles.viewGuide}>
         <BottomLink />
       </View>
@@ -30,6 +33,7 @@ const styles = StyleSheet.create({
   viewInner: {
     width: '100%',
     flex: 1,
+    padding: 15,
   },
   viewGuide: {
     display: 'flex',
