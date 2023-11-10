@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "build:iconfont": "node scripts/generateIconfont.cjs"
   },
   "dependencies": {
     "nanostores": "^0.9.4",
@@ -15,6 +16,7 @@
     "react-native": "0.72.6",
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
+    "react-native-vector-icons": "^10.0.2",
     "react-router": "^6.18.0",
     "react-router-native": "^6.18.0"
   },
@@ -22,14 +24,18 @@
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
+    "@iconify/react": "^4.1.1",
     "@react-native/eslint-config": "^0.72.2",
     "@react-native/metro-config": "^0.72.11",
     "@tsconfig/react-native": "^3.0.0",
     "@types/react": "^18.0.24",
+    "@types/react-native-vector-icons": "^6.4.17",
     "@types/react-test-renderer": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "babel-jest": "^29.2.1",
+    "babel-plugin-module-resolver": "^5.0.0",
+    "css": "^3.0.0",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",

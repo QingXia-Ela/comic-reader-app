@@ -7,12 +7,12 @@ const router = [
     element: <Text>what</Text>,
   },
   {
-    path: '/comic/:id',
+    path: '/search/:id',
     element: <Text>detail</Text>,
   },
   {
-    path: '/read/:id',
-    element: <Text>read</Text>,
+    path: '/settings',
+    element: <Text>settings</Text>,
   },
 ];
 
