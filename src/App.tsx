@@ -12,8 +12,12 @@ import Navigator from './components/Navigator';
 
 const BASIC_SCREEN_OPTIONS: NativeStackNavigationOptions = {
   header: (props) => {
-    // props.
     return <Navigator {...props} />;
+  },
+};
+const SEARCH_SCREEN_OPTIONS: NativeStackNavigationOptions = {
+  header: (props) => {
+    return <Navigator {...props} showBack />;
   },
 };
 
@@ -29,7 +33,7 @@ function App(): JSX.Element {
           component={BasicLayout}
         />
         <Stack.Screen
-          options={BASIC_SCREEN_OPTIONS}
+          options={SEARCH_SCREEN_OPTIONS}
           name="Search"
           component={SearchLayout}
         />

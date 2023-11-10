@@ -18,12 +18,12 @@ const SingleLink: FunctionComponent<{
 
 const LinkList = [
   {
-    text: '总览',
+    text: 'Overview',
     iconName: 'icon-24gl-list3',
     to: '/',
   },
   {
-    text: '搜索',
+    text: 'Search',
     iconName: 'icon-24gl-search2',
     to: '/search',
     onPress: (navigation: NavigationProp<any>) => {
@@ -31,7 +31,7 @@ const LinkList = [
     },
   },
   {
-    text: '设置',
+    text: 'Settings',
     iconName: 'icon-24gl-gear2',
     to: '/settings',
   },
