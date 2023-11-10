@@ -13,7 +13,13 @@ const BasicLayout: FunctionComponent<BasicLayoutProps> = ({ navigation }) => {
   return (
     <View style={styles.viewWrapper}>
       <View style={styles.viewInner}>
-        <ComicItem imgPath={require('../../assets/images/00002.jpg')} />
+        <ComicItem
+          name="NoyAcg | [エゾクロテン (宮野木ジジ)] わるい子晴ちん 暫定版
+          (アイドルマスター シンデレラガールズ) [中国翻訳] [DL版]"
+          authors={['mutou-koucha', 'mignon']}
+          tags={['百合']}
+          imgPath={require('../../assets/images/00002.jpg')}
+        />
       </View>
       <View style={styles.viewGuide}>
         <BottomLink />

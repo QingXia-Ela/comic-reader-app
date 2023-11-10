@@ -1,12 +1,15 @@
 import { FunctionComponent } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, Text } from 'react-native';
 
-interface TagProps {}
+interface TagProps extends Partial<TouchableOpacity> {
+  children?: string;
+  onPress?: () => void;
+}
 
-const Tag: FunctionComponent<TagProps> = () => {
+const Tag: FunctionComponent<TagProps> = ({ children, ...props }) => {
   return (
-    <TouchableOpacity style={styles.wrapper} activeOpacity={0.7}>
-      <Text style={styles.text}>百合百合百合百合百合百合百合百合百合百合</Text>
+    <TouchableOpacity style={styles.wrapper} activeOpacity={0.7} {...props}>
+      <Text style={styles.text}>{children}</Text>
     </TouchableOpacity>
   );
 };
@@ -17,8 +20,7 @@ const styles = StyleSheet.create({
     padding: 6,
     paddingLeft: 12,
     paddingRight: 12,
-    marginLeft: 6,
-    marginRight: 6,
+    marginRight: 8,
   },
   text: {
     color: '#fff',

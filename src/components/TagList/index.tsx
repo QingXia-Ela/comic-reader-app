@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useMemo } from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -9,23 +9,38 @@ import {
 } from 'react-native';
 import Tag from '../Tag';
 
-interface TagListProps {
-  oneLine?: boolean;
+interface TagOption {
+  title: string;
+  onPress?: () => void;
 }
 
-const TagList: FunctionComponent<TagListProps> = ({ oneLine }) => {
+interface TagListProps {
+  oneLine?: boolean;
+  tags?: Array<TagOption | string>;
+}
+
+const TagList: FunctionComponent<TagListProps> = ({ oneLine, tags = [] }) => {
+  const List = useMemo(() => {
+    return tags.map((item, index) => {
+      if (typeof item === 'string') {
+        return <Tag key={index}>{item}</Tag>;
+      }
+      return (
+        <Tag key={index} {...item}>
+          {item.title}
+        </Tag>
+      );
+    });
+  }, []);
+
   return oneLine ? (
     <SafeAreaView style={styles.wrapper}>
       <ScrollView style={{ ...styles.wrapper, height: 40 }} horizontal>
-        <Tag />
-        <Tag />
+        {List}
       </ScrollView>
     </SafeAreaView>
   ) : (
-    <View style={styles.wrapper}>
-      <Tag />
-      <Tag />
-    </View>
+    <View style={styles.wrapper}>{List}</View>
   );
 };
 

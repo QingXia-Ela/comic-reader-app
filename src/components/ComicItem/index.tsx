@@ -2,30 +2,46 @@ import { FunctionComponent } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import TagList from '../TagList';
 
-interface ComicItemProps {
+interface ComicItemProps extends Partial<View> {
   imgPath: string;
+  name: string;
+  authors: string[];
+  tags?: Parameters<typeof TagList>[0]['tags'];
+  onPress?: () => void;
 }
 
-const TestAuthors = ['mutou-koucha', 'sakura'];
-
-const ComicItem: FunctionComponent<ComicItemProps> = ({ imgPath }) => {
+const ComicItem: FunctionComponent<ComicItemProps> = ({
+  imgPath,
+  name,
+  authors,
+  onPress,
+  tags,
+  ...props
+}) => {
   return (
-    <View style={styles.wrapper}>
-      {/* @ts-expect-error: source can resolve img */}
-      <Image source={imgPath} style={styles.leftImg} />
+    <View style={styles.wrapper} {...props}>
+      <TouchableOpacity
+        style={styles.leftImgWrapper}
+        onPress={onPress}
+        activeOpacity={0.7}>
+        {/* @ts-expect-error: source can resolve img */}
+        <Image source={imgPath} style={styles.leftImg} />
+      </TouchableOpacity>
       <View style={styles.rightInfo}>
-        <TouchableOpacity style={{ flex: 1 }}>
+        <TouchableOpacity
+          onPress={onPress}
+          style={{ flex: 1 }}
+          activeOpacity={0.7}>
           <Text style={styles.rightTitle} numberOfLines={4}>
-            NoyAcg | [エゾクロテン (宮野木ジジ)] わるい子晴ちん 暫定版
-            (アイドルマスター シンデレラガールズ) [中国翻訳] [DL版]
+            {name}
           </Text>
           <View style={styles.authorList}>
             <Text style={styles.authorItem} numberOfLines={1}>
-              {TestAuthors.join(' | ')}
+              {(authors || []).join(' | ')}
             </Text>
           </View>
         </TouchableOpacity>
-        <TagList oneLine />
+        <TagList tags={tags} oneLine />
       </View>
     </View>
   );
@@ -41,8 +57,11 @@ const styles = StyleSheet.create({
     padding: 8,
     marginBottom: 6,
   },
-  leftImg: {
+  leftImgWrapper: {
     width: '25%',
+  },
+  leftImg: {
+    width: '100%',
     height: '100%',
     objectFit: 'contain',
   },
