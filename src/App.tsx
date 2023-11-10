@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import {
@@ -9,6 +9,7 @@ import {
 import BasicLayout from './layouts/BasicLayout';
 import SearchLayout from './layouts/SearchLayout';
 import Navigator from './components/Navigator';
+import globalStyles from './styles/global';
 
 const BASIC_SCREEN_OPTIONS: NativeStackNavigationOptions = {
   header: (props) => {
@@ -25,20 +26,22 @@ const Stack = createNativeStackNavigator();
 
 function App(): JSX.Element {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          options={BASIC_SCREEN_OPTIONS}
-          name="Comic Reader"
-          component={BasicLayout}
-        />
-        <Stack.Screen
-          options={SEARCH_SCREEN_OPTIONS}
-          name="Search"
-          component={SearchLayout}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View style={globalStyles.container}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            options={BASIC_SCREEN_OPTIONS}
+            name="Comic Reader"
+            component={BasicLayout}
+          />
+          <Stack.Screen
+            options={SEARCH_SCREEN_OPTIONS}
+            name="Search"
+            component={SearchLayout}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </View>
   );
 }
 
