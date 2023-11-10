@@ -6,36 +6,13 @@
  */
 
 import React from 'react';
-import type { PropsWithChildren } from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import BasicLayout from './layouts/BasicLayout';
-import useIsDark from './hooks/useIsDark';
+import { RouterProvider } from 'react-router';
+import router from './router';
 
 function App(): JSX.Element {
-  const isDarkMode = useIsDark();
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    fontSize: 24,
-  };
-
-  return <BasicLayout />;
+  return <RouterProvider router={router} />;
 }
 
 const styles = StyleSheet.create({
