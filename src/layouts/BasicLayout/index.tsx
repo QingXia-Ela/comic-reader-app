@@ -2,20 +2,20 @@ import { FunctionComponent, PropsWithChildren } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Outlet } from 'react-router-native';
 import BottomLink from './components/BottomLink';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
-interface BasicLayoutProps extends PropsWithChildren {}
+interface BasicLayoutProps extends PropsWithChildren {
+  navigation: NavigationProp<ReactNavigation.RootParamList>;
+}
 
-const BasicLayout: FunctionComponent<BasicLayoutProps> = ({ children }) => {
+const BasicLayout: FunctionComponent<BasicLayoutProps> = ({ navigation }) => {
   return (
     <View style={styles.viewWrapper}>
-      <View style={styles.viewInner}>
-        <Outlet />
-      </View>
+      <View style={styles.viewInner}></View>
       <View style={styles.viewGuide}>
         <BottomLink />
       </View>
     </View>
-    // <NativeRouter></NativeRouter>
   );
 };
 

@@ -1,18 +1,41 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 
-import { RouterProvider } from 'react-router';
-import router from './router';
+import { NavigationContainer } from '@react-navigation/native';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationOptions,
+} from '@react-navigation/native-stack';
+import BasicLayout from './layouts/BasicLayout';
+import SearchLayout from './layouts/SearchLayout';
+import Navigator from './components/Navigator';
+
+const BASIC_SCREEN_OPTIONS: NativeStackNavigationOptions = {
+  header: (props) => {
+    // props.
+    return <Navigator {...props} />;
+  },
+};
+
+const Stack = createNativeStackNavigator();
 
 function App(): JSX.Element {
-  return <RouterProvider router={router} />;
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          options={BASIC_SCREEN_OPTIONS}
+          name="Comic Reader"
+          component={BasicLayout}
+        />
+        <Stack.Screen
+          options={BASIC_SCREEN_OPTIONS}
+          name="Search"
+          component={SearchLayout}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
 const styles = StyleSheet.create({

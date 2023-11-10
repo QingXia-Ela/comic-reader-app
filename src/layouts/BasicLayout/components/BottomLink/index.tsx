@@ -1,21 +1,19 @@
 import { Iconfont } from '../../../../assets/font';
 import { FunctionComponent } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
-import { Link } from 'react-router-native';
+import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 interface BottomLinkProps {}
 
 const SingleLink: FunctionComponent<{
   text: string;
   iconName: any;
-  to: string;
-}> = ({ text, iconName, to }) => (
-  <Link to={to} underlayColor="transparent">
-    <View style={{ ...styles.linkTextWrapper }}>
-      <Iconfont name={iconName} size={30} color={'white'} />
-      <Text style={styles.linkText}>{text}</Text>
-    </View>
-  </Link>
+  onPress?: () => void;
+}> = ({ text, iconName, onPress }) => (
+  <TouchableOpacity style={{ ...styles.linkTextWrapper }} onPress={onPress}>
+    <Iconfont name={iconName} size={30} color={'white'} />
+    <Text style={styles.linkText}>{text}</Text>
+  </TouchableOpacity>
 );
 
 const LinkList = [
@@ -28,6 +26,9 @@ const LinkList = [
     text: '搜索',
     iconName: 'icon-24gl-search2',
     to: '/search',
+    onPress: (navigation: NavigationProp<any>) => {
+      navigation.navigate('Search');
+    },
   },
   {
     text: '设置',
@@ -37,6 +38,8 @@ const LinkList = [
 ];
 
 const BottomLink: FunctionComponent<BottomLinkProps> = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.linkWrapper}>
       {LinkList.map((item, index) => (
@@ -44,7 +47,7 @@ const BottomLink: FunctionComponent<BottomLinkProps> = () => {
           key={index}
           text={item.text}
           iconName={item.iconName}
-          to={item.to}
+          onPress={() => item.onPress?.(navigation)}
         />
       ))}
     </View>

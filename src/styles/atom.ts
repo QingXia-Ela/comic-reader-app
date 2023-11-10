@@ -25,6 +25,9 @@ const S = StyleSheet.create({
   justify_center: {
     justifyContent: 'center',
   },
+  text_white: {
+    color: '#fff',
+  },
 });
 
 export default S;
