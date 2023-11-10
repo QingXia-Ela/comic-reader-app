@@ -1,13 +1,12 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, PropsWithChildren } from 'react';
 import {
   createNativeStackNavigator,
   NativeStackHeaderProps,
 } from '@react-navigation/native-stack';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import S from '../../styles/atom';
 import { Iconfont } from '../../assets/font';
 
-interface NavigatorProps extends NativeStackHeaderProps {
+interface NavigatorProps extends PropsWithChildren<NativeStackHeaderProps> {
   title?: string;
   showBack?: boolean;
 }
@@ -15,6 +14,7 @@ interface NavigatorProps extends NativeStackHeaderProps {
 const Navigator: FunctionComponent<NavigatorProps> = ({
   title,
   showBack,
+  children,
   ...props
 }) => {
   return (
@@ -29,7 +29,9 @@ const Navigator: FunctionComponent<NavigatorProps> = ({
           />
         </TouchableOpacity>
       )}
-      <Text style={styles.titleStyle}>{title ?? props.route.name}</Text>
+      {children ?? (
+        <Text style={styles.titleStyle}>{title ?? props.route.name}</Text>
+      )}
     </View>
   );
 };
