@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import Modal from '../Modal';
 import TextInput from '../Input';
@@ -10,7 +10,7 @@ interface PaginationProps {
   eachPageCount?: number;
   /** @default 5 */
   maxCountButton?: number;
-  onChange: (page: number) => void;
+  onChange?: (page: number) => void;
 }
 
 const PaginationButton = ({ children, active, onPress }: any) => (
@@ -86,7 +86,7 @@ const PaginationButtonGroup = ({
         active={item === current || item === '...'}
         onPress={() => {
           if (typeof item === 'number') {
-            onChange(item);
+            onChange?.(item);
           }
         }}>
         {item}
@@ -102,9 +102,12 @@ const Pagination: FunctionComponent<PaginationProps> = ({
   maxCountButton = 5,
   onChange,
 }) => {
-  const [page, setPage] = useState(current);
+  const [page, setPage] = useState(current || 1);
   const [showModal, setShowModal] = useState(false);
   const [inputPage, setInputPage] = useState('');
+  useEffect(() => {
+    onChange?.(page);
+  }, [page]);
 
   const pageCount = Math.ceil(total / eachPageCount);
 

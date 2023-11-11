@@ -19,6 +19,7 @@ interface ModalProps extends PropsWithChildren<RNModalProps> {
   title: string;
   showModal?: boolean;
   buttons?: ModalButtonProps[];
+  onOk?: (event: NativeSyntheticEvent<any>) => void;
 }
 
 const ModalButton: FunctionComponent<ModalButtonProps> = ({
@@ -51,7 +52,7 @@ const Modal: FunctionComponent<ModalProps> = ({
       {
         title: 'OK',
         onPress: (e) => {
-          props.onRequestClose?.(e);
+          props.onOk?.(e);
         },
       },
     ] as ModalButtonProps[];

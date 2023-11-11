@@ -3,24 +3,36 @@ import { FunctionComponent } from 'react';
 import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 
-interface BottomLinkProps {}
+interface BottomLinkProps {
+  onTabChange?: (tab: string) => void;
+}
 
-const SingleLink: FunctionComponent<{
+interface SingleLinkProps {
   text: string;
   iconName: any;
-  onPress?: () => void;
-}> = ({ text, iconName, onPress }) => (
+  onPress?: (...args: any) => void;
+  [key: string]: any;
+}
+
+const SingleLink: FunctionComponent<SingleLinkProps> = ({
+  text,
+  iconName,
+  onPress,
+}) => (
   <TouchableOpacity style={{ ...styles.linkTextWrapper }} onPress={onPress}>
     <Iconfont name={iconName} size={30} color={'white'} />
     <Text style={styles.linkText}>{text}</Text>
   </TouchableOpacity>
 );
 
-const LinkList = [
+const LinkList: SingleLinkProps[] = [
   {
     text: 'Overview',
     iconName: 'icon-24gl-list3',
     to: '/',
+    onPress: (_, onTabChange) => {
+      onTabChange?.('Overview');
+    },
   },
   {
     text: 'Search',
@@ -34,10 +46,13 @@ const LinkList = [
     text: 'Settings',
     iconName: 'icon-24gl-gear2',
     to: '/settings',
+    onPress: (_, onTabChange) => {
+      onTabChange?.('Settings');
+    },
   },
 ];
 
-const BottomLink: FunctionComponent<BottomLinkProps> = () => {
+const BottomLink: FunctionComponent<BottomLinkProps> = ({ onTabChange }) => {
   const navigation = useNavigation();
 
   return (
@@ -47,7 +62,7 @@ const BottomLink: FunctionComponent<BottomLinkProps> = () => {
           key={index}
           text={item.text}
           iconName={item.iconName}
-          onPress={() => item.onPress?.(navigation)}
+          onPress={() => item.onPress?.(navigation, onTabChange)}
         />
       ))}
     </View>
