@@ -20,7 +20,8 @@
     "react-native-screens": "^3.27.0",
     "react-native-vector-icons": "^10.0.2",
     "react-router": "^6.18.0",
-    "react-router-native": "^6.18.0"
+    "react-router-native": "^6.18.0",
+    "swr": "^2.2.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

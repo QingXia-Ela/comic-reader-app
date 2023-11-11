@@ -10,6 +10,7 @@ import BottomLink from './components/BottomLink';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import ComicItem from '../../components/ComicItem';
 import sleep from '../../utils/sleep';
+import Pagination from '../../components/Pagination';
 
 interface BasicLayoutProps extends PropsWithChildren {
   navigation: NavigationProp<ReactNavigation.RootParamList>;
@@ -30,16 +31,14 @@ const BasicLayout: FunctionComponent<BasicLayoutProps> = ({ navigation }) => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        {Array.from({ length: 30 }).map((v, i) => (
-          <ComicItem
-            key={i}
-            name="NoyAcg | [エゾクロテン (宮野木ジジ)] わるい子晴ちん 暫定版
+        <ComicItem
+          name="NoyAcg | [エゾクロテン (宮野木ジジ)] わるい子晴ちん 暫定版
           (アイドルマスター シンデレラガールズ) [中国翻訳] [DL版]"
-            authors={['mutou-koucha', 'mignon']}
-            tags={['百合']}
-            imgPath={require('../../assets/images/00002.jpg')}
-          />
-        ))}
+          authors={['mutou-koucha', 'mignon']}
+          tags={['百合']}
+          imgPath={require('../../assets/images/00002.jpg')}
+        />
+        <Pagination total={100} />
       </ScrollView>
       <View style={styles.viewGuide}>
         <BottomLink />
