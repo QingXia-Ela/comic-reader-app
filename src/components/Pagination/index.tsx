@@ -51,7 +51,11 @@ const Pagination: FunctionComponent<PaginationProps> = ({
         onPress={handleInput}>
         <Text style={{ color: '#fff', fontSize: 18 }}>Input Pages...</Text>
       </TouchableOpacity>
-      <Modal />
+      <Modal
+        title="Input Pages"
+        visible={showModal}
+        onRequestClose={() => setShowModal(false)}
+      />
     </View>
   );
 };

@@ -49,9 +49,11 @@ const Modal: FunctionComponent<ModalProps> = ({
     return [
       {
         title: 'OK',
-        onPress: props.onRequestClose,
+        onPress: (e) => {
+          props.onRequestClose?.(e);
+        },
       },
-    ];
+    ] as ModalButtonProps[];
   }, []);
   return (
     <RNModal
