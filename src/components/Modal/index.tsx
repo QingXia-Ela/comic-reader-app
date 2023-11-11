@@ -43,6 +43,7 @@ const Modal: FunctionComponent<ModalProps> = ({
   title,
   showModal = false,
   buttons,
+  children,
   ...props
 }) => {
   const defaultButtons = useMemo(() => {
@@ -72,7 +73,7 @@ const Modal: FunctionComponent<ModalProps> = ({
         }}></View>
       <View style={styles.modalWrapper}>
         <Text style={styles.modalTitle}>{title}</Text>
-        <View style={{ flex: 1 }}></View>
+        <View style={{ flex: 1 }}>{children}</View>
         <View style={styles.modalButtonGroup}>
           {(buttons ?? defaultButtons).map((item, index) => (
             <ModalButton key={index} {...item} />
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: '#fff',
-    marginBottom: 10,
+    marginBottom: 20,
   },
   modalButtonGroup: {
     display: 'flex',

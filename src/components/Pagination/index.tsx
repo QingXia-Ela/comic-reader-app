@@ -1,6 +1,7 @@
 import { FunctionComponent, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import Modal from '../Modal';
+import TextInput from '../Input';
 
 interface PaginationProps {
   total: number;
@@ -33,6 +34,7 @@ const Pagination: FunctionComponent<PaginationProps> = ({
 }) => {
   const [page, setPage] = useState(current);
   const [showModal, setShowModal] = useState(false);
+  const [inputPage, setInputPage] = useState('');
 
   const handleInput = () => {
     setShowModal(true);
@@ -54,8 +56,9 @@ const Pagination: FunctionComponent<PaginationProps> = ({
       <Modal
         title="Input Pages"
         visible={showModal}
-        onRequestClose={() => setShowModal(false)}
-      />
+        onRequestClose={() => setShowModal(false)}>
+        <TextInput placeholder="Input Page Number..." />
+      </Modal>
     </View>
   );
 };
