@@ -25,6 +25,76 @@ const PaginationButton = ({ children, active, onPress }: any) => (
   </TouchableOpacity>
 );
 
+interface PaginationButtonGroupProps {
+  total: number;
+  current: number;
+  /** @default 10 */
+  eachPageCount?: number;
+  /** @default 5 */
+  maxCountButton?: number;
+  onChange: (page: number) => void;
+}
+
+const PaginationButtonGroup = ({
+  total,
+  current,
+  eachPageCount = 10,
+  maxCountButton = 5,
+  onChange,
+}: PaginationButtonGroupProps) => {
+  const pageCount = Math.ceil(total / eachPageCount);
+  if (pageCount <= 5) {
+    return Array.from({ length: pageCount }).map((_, index) => {
+      const active = current === index + 1;
+      return (
+        <PaginationButton
+          key={index}
+          active={active}
+          onPress={() => {
+            onChange(index + 1);
+          }}>
+          {index + 1}
+        </PaginationButton>
+      );
+    });
+  }
+  const template: Array<number | '...'> = [];
+
+  if (current <= 3) {
+    Array.from({ length: maxCountButton - 1 }).map((_, index) => {
+      template.push(index + 1);
+    });
+    template.push('...', pageCount);
+  } else if (current >= pageCount - 2) {
+    template.push(1, '...');
+    Array.from({ length: maxCountButton - 1 }).map((_, index) => {
+      template.push(pageCount - (maxCountButton - 2) + index);
+    });
+  } else {
+    template.push(1, '...');
+    const mid = Math.floor(maxCountButton / 2);
+    Array.from({ length: maxCountButton - 2 }).map((_, index) => {
+      template.push(current - mid + index + 1);
+    });
+    template.push('...', pageCount);
+  }
+
+  return template.map((item, index) => {
+    return (
+      <PaginationButton
+        key={index}
+        active={item === current || item === '...'}
+        onPress={() => {
+          if (typeof item === 'number') {
+            onChange(item);
+          }
+        }}>
+        {item}
+      </PaginationButton>
+    );
+  });
+};
+
 const Pagination: FunctionComponent<PaginationProps> = ({
   total,
   current,
@@ -36,21 +106,33 @@ const Pagination: FunctionComponent<PaginationProps> = ({
   const [showModal, setShowModal] = useState(false);
   const [inputPage, setInputPage] = useState('');
 
-  const handleInput = () => {
+  const pageCount = Math.ceil(total / eachPageCount);
+
+  const handleShowModal = () => {
     setShowModal(true);
   };
+
+  const handleInputPage = () => {};
 
   return (
     <View style={styles.paginationWrapper}>
       <View style={styles.paginationButtonWrapper}>
-        <PaginationButton>{'<'}</PaginationButton>
-        <PaginationButton>{'1'}</PaginationButton>
-        <PaginationButton>{'2'}</PaginationButton>
-        <PaginationButton>{'>'}</PaginationButton>
+        <PaginationButton onPress={() => page > 1 && setPage(page - 1)}>
+          {'<'}
+        </PaginationButton>
+        <PaginationButtonGroup
+          total={total}
+          current={page}
+          onChange={setPage}
+          maxCountButton={maxCountButton}
+        />
+        <PaginationButton onPress={() => page < pageCount && setPage(page + 1)}>
+          {'>'}
+        </PaginationButton>
       </View>
       <TouchableOpacity
         style={styles.paginationInputButton}
-        onPress={handleInput}>
+        onPress={handleShowModal}>
         <Text style={{ color: '#fff', fontSize: 18 }}>Input Pages...</Text>
       </TouchableOpacity>
       <Modal
@@ -77,6 +159,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 46,
     gap: 10,
+    marginTop: 10,
   },
   paginationButton: {
     display: 'flex',
