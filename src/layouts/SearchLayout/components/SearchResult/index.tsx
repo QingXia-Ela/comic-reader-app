@@ -1,11 +1,14 @@
 import ComicItem from '@/components/ComicItem';
 import Pagination from '@/components/Pagination';
+import { useNavigation } from '@react-navigation/native';
 import { FunctionComponent } from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 
 interface SearchResultProps {}
 
 const SearchResult: FunctionComponent<SearchResultProps> = () => {
+  const navigation = useNavigation();
+
   return (
     <ScrollView style={styles.container}>
       <ComicItem

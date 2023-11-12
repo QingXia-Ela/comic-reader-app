@@ -11,6 +11,8 @@ import SearchLayout from './layouts/SearchLayout';
 import Navigator from './components/Navigator';
 import globalStyles from './styles/global';
 import SearchHeader from './layouts/SearchLayout/components/Header';
+import ComicDetailLayout from './layouts/ComicDetailLayout';
+import ComicDetailHeader from './layouts/ComicDetailLayout/Header';
 
 const BASIC_SCREEN_OPTIONS: NativeStackNavigationOptions = {
   header: (props) => {
@@ -22,6 +24,15 @@ const SEARCH_SCREEN_OPTIONS: NativeStackNavigationOptions = {
     return (
       <Navigator {...props} showBack>
         <SearchHeader />
+      </Navigator>
+    );
+  },
+};
+const COMIC_SCREEN_OPTIONS: NativeStackNavigationOptions = {
+  header: (props) => {
+    return (
+      <Navigator showBack {...props}>
+        <ComicDetailHeader />
       </Navigator>
     );
   },
@@ -44,29 +55,15 @@ function App(): JSX.Element {
             name="Search"
             component={SearchLayout}
           />
+          <Stack.Screen
+            options={COMIC_SCREEN_OPTIONS}
+            name="Comic"
+            component={ComicDetailLayout}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;

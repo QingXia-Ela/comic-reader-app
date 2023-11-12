@@ -1,4 +1,4 @@
-# Hentai Comic Reader App
+# Comic Reader App
 
 一个简易图片集合阅读器
 

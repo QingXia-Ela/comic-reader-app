@@ -3,6 +3,7 @@ import { View, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import sleep from '@/utils/sleep';
 import ComicItem from '@/components/ComicItem';
 import Pagination from '@/components/Pagination';
+import { useNavigation } from '@react-navigation/native';
 
 interface OverviewProps {}
 
@@ -13,6 +14,8 @@ const Overview: FunctionComponent<OverviewProps> = () => {
 
     sleep(2000).then(() => setRefreshing(false));
   }, []);
+
+  const navigation = useNavigation();
 
   return (
     <ScrollView
@@ -26,6 +29,8 @@ const Overview: FunctionComponent<OverviewProps> = () => {
         authors={['mutou-koucha', 'mignon']}
         tags={['百合']}
         imgPath={require('@/assets/images/00002.jpg')}
+        // @ts-expect-error: stupid typescript type generate
+        onPress={() => navigation.navigate<any>('Comic')}
       />
       <Pagination total={100} current={1} />
     </ScrollView>

@@ -29,9 +29,11 @@ const Navigator: FunctionComponent<NavigatorProps> = ({
           />
         </TouchableOpacity>
       )}
-      {children ?? (
-        <Text style={styles.titleStyle}>{title ?? props.route.name}</Text>
-      )}
+      <View style={{ flex: 1 }}>
+        {children ?? (
+          <Text style={styles.titleStyle}>{title ?? props.route.name}</Text>
+        )}
+      </View>
     </View>
   );
 };
