@@ -10,6 +10,7 @@ import BasicLayout from './layouts/BasicLayout';
 import SearchLayout from './layouts/SearchLayout';
 import Navigator from './components/Navigator';
 import globalStyles from './styles/global';
+import SearchHeader from './layouts/SearchLayout/components/Header';
 
 const BASIC_SCREEN_OPTIONS: NativeStackNavigationOptions = {
   header: (props) => {
@@ -18,7 +19,11 @@ const BASIC_SCREEN_OPTIONS: NativeStackNavigationOptions = {
 };
 const SEARCH_SCREEN_OPTIONS: NativeStackNavigationOptions = {
   header: (props) => {
-    return <Navigator {...props} showBack />;
+    return (
+      <Navigator {...props} showBack>
+        <SearchHeader />
+      </Navigator>
+    );
   },
 };
 

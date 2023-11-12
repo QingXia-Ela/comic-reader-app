@@ -16,8 +16,6 @@ const TextInput: FunctionComponent<TextInputProps> = ({ ...props }) => {
 const styles = StyleSheet.create({
   input: {
     height: '100%',
-    borderColor: 'gray',
-    borderBottomWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     fontSize: 22,
