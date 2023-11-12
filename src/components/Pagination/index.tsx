@@ -159,23 +159,25 @@ const Pagination: FunctionComponent<PaginationProps> = ({
           {'>'}
         </PaginationButton>
       </View>
-      <TouchableOpacity
-        style={styles.paginationInputButton}
-        onPress={handleShowModal}>
-        <Text style={{ color: '#fff', fontSize: 18 }}>Input Pages...</Text>
-      </TouchableOpacity>
       {pageCount >= 5 && (
-        <Modal
-          title="Input Pages"
-          visible={showModal}
-          onRequestClose={() => setShowModal(false)}
-          onOk={handleOk}>
-          <TextInput
-            value={inputPage}
-            onChangeText={handleInputPage}
-            placeholder="Input Page Number..."
-          />
-        </Modal>
+        <>
+          <TouchableOpacity
+            style={styles.paginationInputButton}
+            onPress={handleShowModal}>
+            <Text style={{ color: '#fff', fontSize: 18 }}>Input Pages...</Text>
+          </TouchableOpacity>
+          <Modal
+            title="Input Pages"
+            visible={showModal}
+            onRequestClose={() => setShowModal(false)}
+            onOk={handleOk}>
+            <TextInput
+              value={inputPage}
+              onChangeText={handleInputPage}
+              placeholder="Input Page Number..."
+            />
+          </Modal>
+        </>
       )}
     </View>
   );
