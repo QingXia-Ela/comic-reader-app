@@ -1,4 +1,10 @@
-import { FunctionComponent, useEffect, useState } from 'react';
+import {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import Modal from '../Modal';
 import TextInput from '../Input';
@@ -95,6 +101,9 @@ const PaginationButtonGroup = ({
   });
 };
 
+// don't know why inputPage val is not change
+let inputVal = '';
+
 const Pagination: FunctionComponent<PaginationProps> = ({
   total,
   current,
@@ -115,7 +124,24 @@ const Pagination: FunctionComponent<PaginationProps> = ({
     setShowModal(true);
   };
 
-  const handleInputPage = () => {};
+  const handleInputPage = (val: string) => {
+    if (val === '') {
+      setInputPage(val);
+    } else if (/^\d+$/.test(val)) {
+      setInputPage(val);
+      inputVal = val;
+    }
+  };
+
+  const handleOk = () => {
+    if (/^\d+$/.test(inputVal)) {
+      setPage(parseInt(inputVal) > pageCount ? pageCount : parseInt(inputVal));
+    } else {
+      setPage(1);
+    }
+    setInputPage('');
+    setShowModal(false);
+  };
 
   return (
     <View style={styles.paginationWrapper}>
@@ -138,12 +164,19 @@ const Pagination: FunctionComponent<PaginationProps> = ({
         onPress={handleShowModal}>
         <Text style={{ color: '#fff', fontSize: 18 }}>Input Pages...</Text>
       </TouchableOpacity>
-      <Modal
-        title="Input Pages"
-        visible={showModal}
-        onRequestClose={() => setShowModal(false)}>
-        <TextInput placeholder="Input Page Number..." />
-      </Modal>
+      {pageCount >= 5 && (
+        <Modal
+          title="Input Pages"
+          visible={showModal}
+          onRequestClose={() => setShowModal(false)}
+          onOk={handleOk}>
+          <TextInput
+            value={inputPage}
+            onChangeText={handleInputPage}
+            placeholder="Input Page Number..."
+          />
+        </Modal>
+      )}
     </View>
   );
 };
