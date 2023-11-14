@@ -1,3 +1,4 @@
+import px2dp from '@/utils/ScreenUtils';
 import { FunctionComponent } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, Text } from 'react-native';
 
@@ -17,14 +18,13 @@ const Tag: FunctionComponent<TagProps> = ({ children, ...props }) => {
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: '#333',
-    padding: 6,
-    paddingLeft: 12,
-    paddingRight: 12,
-    marginRight: 8,
+    paddingHorizontal: px2dp(12),
+    paddingVertical: px2dp(8),
+    marginRight: px2dp(8),
   },
   text: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: px2dp(22),
     textAlign: 'center',
   },
 });

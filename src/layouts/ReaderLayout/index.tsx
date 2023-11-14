@@ -19,7 +19,7 @@ interface ReaderLayoutProps {}
 const RenderItem = ({ index }: { index: number }) => {
   const [height, setHeight] = useState(0);
   return (
-    // @ts-expect-error: component may didn't add PropsWithChildren type?
+    // @ts-expect-error: component may didn't add `PropsWithChildren` type?
     // <ImageZoom
     //   cropWidth={Dimensions.get('window').width}
     //   cropHeight={height}
@@ -44,6 +44,12 @@ const RenderItem = ({ index }: { index: number }) => {
       source={{
         uri: `${Config.BACKEND_API}/img/998543/0000${index + 1}.jpg`,
         priority: FastImage.priority.normal,
+      }}
+      onLoad={({ nativeEvent }) => {
+        setHeight(
+          nativeEvent.height *
+            (Dimensions.get('window').width / nativeEvent.width),
+        );
       }}
       resizeMode="contain"
     />

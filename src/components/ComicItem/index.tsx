@@ -1,6 +1,7 @@
 import { FunctionComponent } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import TagList from '../TagList';
+import px2dp from '@/utils/ScreenUtils';
 
 interface ComicItemProps extends Partial<View> {
   imgPath: string;
@@ -28,11 +29,8 @@ const ComicItem: FunctionComponent<ComicItemProps> = ({
         <Image source={imgPath} style={styles.leftImg} />
       </TouchableOpacity>
       <View style={styles.rightInfo}>
-        <TouchableOpacity
-          onPress={onPress}
-          style={{ flex: 1 }}
-          activeOpacity={0.7}>
-          <Text style={styles.rightTitle} numberOfLines={4}>
+        <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+          <Text style={styles.rightTitle} numberOfLines={3}>
             {name}
           </Text>
           <View style={styles.authorList}>
@@ -52,10 +50,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    height: 220,
+    height: px2dp(260),
     backgroundColor: '#1f1f1f',
-    padding: 8,
-    marginBottom: 15,
+    padding: px2dp(8),
+    marginBottom: px2dp(15),
   },
   leftImgWrapper: {
     width: '25%',
@@ -67,25 +65,27 @@ const styles = StyleSheet.create({
   },
   rightInfo: {
     flex: 1,
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    marginLeft: 20,
+    marginLeft: px2dp(20),
+    paddingBottom: px2dp(2),
   },
   rightTitle: {
     color: '#fff',
-    fontSize: 23,
-    lineHeight: 30,
+    fontSize: px2dp(26),
+    lineHeight: px2dp(34),
   },
   authorList: {
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    marginTop: 15,
+    marginTop: px2dp(15),
   },
   authorItem: {
     color: '#fff',
-    fontSize: 20,
+    fontSize: px2dp(26),
   },
 });
 

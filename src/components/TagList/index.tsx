@@ -8,6 +8,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import Tag from '../Tag';
+import px2dp from '@/utils/ScreenUtils';
 
 interface TagOption {
   title: string;
@@ -35,7 +36,7 @@ const TagList: FunctionComponent<TagListProps> = ({ oneLine, tags = [] }) => {
 
   return oneLine ? (
     <SafeAreaView style={styles.wrapper}>
-      <ScrollView style={{ ...styles.wrapper, height: 40 }} horizontal>
+      <ScrollView style={{ ...styles.wrapper }} horizontal>
         {List}
       </ScrollView>
     </SafeAreaView>
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: px2dp(8),
     width: '100%',
   },
 });

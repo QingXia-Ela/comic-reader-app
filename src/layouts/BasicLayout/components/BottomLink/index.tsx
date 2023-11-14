@@ -2,6 +2,7 @@ import { Iconfont } from '../../../../assets/font';
 import { FunctionComponent } from 'react';
 import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import px2dp from '@/utils/ScreenUtils';
 
 interface BottomLinkProps {
   onTabChange?: (tab: string) => void;
@@ -20,7 +21,7 @@ const SingleLink: FunctionComponent<SingleLinkProps> = ({
   onPress,
 }) => (
   <TouchableOpacity style={{ ...styles.linkTextWrapper }} onPress={onPress}>
-    <Iconfont name={iconName} size={30} color={'white'} />
+    <Iconfont name={iconName} size={px2dp(30)} color={'white'} />
     <Text style={styles.linkText}>{text}</Text>
   </TouchableOpacity>
 );
@@ -77,27 +78,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingLeft: 50,
-    paddingRight: 50,
+    paddingLeft: px2dp(50),
+    paddingRight: px2dp(50),
     backgroundColor: '#333',
   },
   linkTextWrapper: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    gap: 10,
-    paddingTop: 6,
-    paddingLeft: 50,
-    paddingRight: 50,
-    paddingBottom: 3,
-    borderRadius: 40,
+    gap: px2dp(10),
+    paddingTop: px2dp(6),
+    paddingVertical: px2dp(50),
+    paddingBottom: px2dp(3),
+    borderRadius: px2dp(40),
   },
   linkTextWrapperActive: {
     backgroundColor: '#555',
   },
   linkText: {
     color: 'white',
-    fontSize: 22,
+    fontSize: px2dp(22),
     backgroundColor: 'transparent',
   },
 });

@@ -8,6 +8,7 @@ import {
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import Modal from '../Modal';
 import TextInput from '../Input';
+import px2dp from '@/utils/ScreenUtils';
 
 interface PaginationProps {
   total: number;
@@ -27,7 +28,7 @@ const PaginationButton = ({ children, active, onPress }: any) => (
     }}
     activeOpacity={0.7}
     onPress={onPress}>
-    <Text style={{ color: '#fff', fontSize: 20 }}>{children}</Text>
+    <Text style={{ color: '#fff', fontSize: px2dp(26) }}>{children}</Text>
   </TouchableOpacity>
 );
 
@@ -164,7 +165,9 @@ const Pagination: FunctionComponent<PaginationProps> = ({
           <TouchableOpacity
             style={styles.paginationInputButton}
             onPress={handleShowModal}>
-            <Text style={{ color: '#fff', fontSize: 18 }}>Input Pages...</Text>
+            <Text style={{ color: '#fff', fontSize: px2dp(24) }}>
+              Input Pages...
+            </Text>
           </TouchableOpacity>
           <Modal
             title="Input Pages"
@@ -195,17 +198,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     width: '100%',
-    height: 46,
-    gap: 10,
-    marginTop: 10,
+    height: px2dp(56),
+    gap: px2dp(10),
+    marginTop: px2dp(10),
   },
   paginationButton: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    width: 46,
-    height: 46,
-    borderRadius: 23,
+    width: px2dp(56),
+    height: px2dp(56),
+    borderRadius: px2dp(28),
     backgroundColor: '#242424',
   },
   paginationButtonActive: {
@@ -216,7 +219,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     width: '100%',
-    marginTop: 20,
+    marginTop: px2dp(20),
   },
 });
 
