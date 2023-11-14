@@ -1,5 +1,6 @@
 import { Iconfont } from '@/assets/font';
 import Tag from '@/components/Tag';
+import px2dp from '@/utils/ScreenUtils';
 import { useNavigation } from '@react-navigation/native';
 import {
   FunctionComponent,
@@ -42,12 +43,12 @@ const tagViewStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
-    marginBottom: 30,
+    marginBottom: px2dp(30),
   },
   tagName: {
-    fontSize: 22,
+    fontSize: px2dp(30),
     color: '#fff',
-    marginRight: 10,
+    marginRight: px2dp(10),
   },
 });
 
@@ -73,13 +74,17 @@ const ComicDetailLayout: FunctionComponent<ComicDetailLayoutProps> = () => {
         <TouchableOpacity
           onPress={() => navigation.navigate('Reader')}
           style={[styles.baiscButton, styles.readButton]}>
-          <Text style={{ color: '#fff', fontSize: 20 }}>Read</Text>
+          <Text style={{ color: '#fff', fontSize: px2dp(26) }}>Read</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.baiscButton, styles.favoriteButton]}>
           {isFavorite ? (
-            <Iconfont name="icon-favorite-fill" color={'#fff'} size={26} />
+            <Iconfont
+              name="icon-favorite-fill"
+              color={'#fff'}
+              size={px2dp(34)}
+            />
           ) : (
-            <Iconfont name="icon-favorite" color={'#fff'} size={26} />
+            <Iconfont name="icon-favorite" color={'#fff'} size={px2dp(34)} />
           )}
         </TouchableOpacity>
       </ScrollView>
@@ -91,41 +96,42 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#121212',
-    padding: 15,
+    padding: px2dp(30),
   },
   comicDetailWrapper: {
     width: '100%',
     height: '100%',
     backgroundColor: '#1b1b1b',
-    paddingVertical: 10,
-    paddingHorizontal: 50,
-    borderRadius: 10,
+    paddingVertical: px2dp(16),
+    paddingHorizontal: px2dp(30),
+    borderRadius: px2dp(10),
   },
   img: {
     width: '100%',
-    height: 320,
+    height: px2dp(360),
     objectFit: 'contain',
-    marginBottom: 30,
+    marginBottom: px2dp(30),
   },
   title: {
-    fontSize: 26,
+    fontSize: px2dp(30),
     color: '#fff',
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: px2dp(30),
   },
   baiscButton: {
     width: '100%',
-    height: 50,
+    height: px2dp(80),
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },
   readButton: {
     backgroundColor: '#333',
-    marginBottom: 20,
+    marginBottom: px2dp(30),
   },
   favoriteButton: {
     backgroundColor: '#cc0000',
+    marginBottom: px2dp(30),
   },
 });
 

@@ -1,4 +1,5 @@
 import { Iconfont } from '@/assets/font';
+import px2dp from '@/utils/ScreenUtils';
 import { useNavigation } from '@react-navigation/native';
 import {
   FunctionComponent,
@@ -20,7 +21,10 @@ const ComicDetailHeader: FunctionComponent<ComicDetailHeaderProps> = () => {
         style={{ marginRight: 10 }}
         // @ts-expect-error: router valid navigate
         onPress={() => navigation.navigate('Comic Reader')}>
-        <Iconfont name="icon-24gl-home3" size={30} color={'white'}></Iconfont>
+        <Iconfont
+          name="icon-24gl-home3"
+          size={px2dp(36)}
+          color={'white'}></Iconfont>
       </TouchableOpacity>
     </View>
   );
@@ -33,10 +37,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingLeft: 20,
+    paddingLeft: px2dp(30),
   },
   title: {
-    fontSize: 24,
+    fontSize: px2dp(30),
     color: 'white',
   },
 });

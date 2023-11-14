@@ -5,6 +5,7 @@ import {
 } from '@react-navigation/native-stack';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Iconfont } from '../../assets/font';
+import px2dp from '@/utils/ScreenUtils';
 
 interface NavigatorProps extends PropsWithChildren<NativeStackHeaderProps> {
   title?: string;
@@ -24,7 +25,7 @@ const Navigator: FunctionComponent<NavigatorProps> = ({
           <Iconfont
             name="icon-24gl-arrowLeft"
             color={'#fff'}
-            size={40}
+            size={px2dp(50)}
             onPress={() => props.navigation.goBack()}
           />
         </TouchableOpacity>
@@ -44,15 +45,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    height: 80,
-    paddingLeft: 20,
-    paddingRight: 20,
+    height: px2dp(100),
+    paddingLeft: px2dp(30),
+    paddingRight: px2dp(30),
     backgroundColor: '#222',
   },
   titleStyle: {
     color: '#fff',
-    fontSize: 24,
-    paddingLeft: 20,
+    fontSize: px2dp(30),
+    paddingLeft: px2dp(20),
   },
 });
 

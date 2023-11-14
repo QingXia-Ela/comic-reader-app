@@ -1,5 +1,6 @@
 import { Iconfont } from '@/assets/font';
 import TextInput from '@/components/Input';
+import px2dp from '@/utils/ScreenUtils';
 import { FunctionComponent, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 
@@ -18,7 +19,7 @@ const SearchHeader: FunctionComponent<SearchHeaderProps> = () => {
       <TouchableOpacity>
         <Iconfont
           name="icon-24gl-cross"
-          size={24}
+          size={px2dp(28)}
           color={'white'}
           onPress={() => setKeyword('')}
         />
@@ -36,14 +37,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#222',
   },
   input: {
-    width: '88%',
+    width: '94%',
     height: '100%',
     borderRadius: 5,
-    paddingHorizontal: 10,
-    marginLeft: 10,
-    fontSize: 22,
+    paddingHorizontal: px2dp(10),
+    marginLeft: px2dp(10),
+    fontSize: px2dp(30),
     color: '#fff',
-    backgroundColor: '#222',
   },
 });
 

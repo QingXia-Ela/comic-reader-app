@@ -1,3 +1,4 @@
+import { deviceWidth } from '@/utils/ScreenUtils';
 import { FunctionComponent, useEffect, useState } from 'react';
 import {
   StyleSheet,
@@ -17,41 +18,21 @@ import ImageZoom from 'react-native-image-pan-zoom';
 interface ReaderLayoutProps {}
 
 const RenderItem = ({ index }: { index: number }) => {
-  const [height, setHeight] = useState(0);
+  const [height, setHeight] = useState(320);
   return (
-    // @ts-expect-error: component may didn't add `PropsWithChildren` type?
-    // <ImageZoom
-    //   cropWidth={Dimensions.get('window').width}
-    //   cropHeight={height}
-    //   imageWidth={Dimensions.get('window').width}
-    //   imageHeight={height}
-    //   panToMove={false}>
-    //   <Image
-    //     style={[styles.img, { height }]}
-    //     onLoad={({ nativeEvent }) => {
-    //       setHeight(
-    //         nativeEvent.source.height *
-    //           (Dimensions.get('window').width / nativeEvent.source.width),
-    //       );
-    //     }}
-    //     source={{
-    //       uri: `${Config.BACKEND_API}/img/998543/0000${index + 1}.jpg`,
-    //     }}
-    //   />
-    // </ImageZoom>
-    <FastImage
+    <Image
       style={[styles.img, { height }]}
-      source={{
-        uri: `${Config.BACKEND_API}/img/998543/0000${index + 1}.jpg`,
-        priority: FastImage.priority.normal,
-      }}
       onLoad={({ nativeEvent }) => {
         setHeight(
-          nativeEvent.height *
-            (Dimensions.get('window').width / nativeEvent.width),
+          nativeEvent.source.height *
+            (Dimensions.get('window').width / nativeEvent.source.width),
         );
       }}
-      resizeMode="contain"
+      source={{
+        uri: `${Config.BACKEND_API}/img/998543/${(index + 1)
+          .toString()
+          .padStart(5, '0')}.jpg`,
+      }}
     />
   );
 };
@@ -59,11 +40,12 @@ const RenderItem = ({ index }: { index: number }) => {
 const ReaderLayout: FunctionComponent<ReaderLayoutProps> = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        {Array.from({ length: 10 }).map((_, index) => (
-          <RenderItem key={index} index={index} />
-        ))}
-      </ScrollView>
+      <FlatList
+        style={styles.container}
+        data={Array.from({ length: 20 }).map((_, index) => index)}
+        renderItem={({ index }) => <RenderItem index={index} />}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </SafeAreaView>
     // <View
     //   style={[
