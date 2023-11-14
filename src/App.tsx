@@ -13,6 +13,7 @@ import globalStyles from './styles/global';
 import SearchHeader from './layouts/SearchLayout/components/Header';
 import ComicDetailLayout from './layouts/ComicDetailLayout';
 import ComicDetailHeader from './layouts/ComicDetailLayout/Header';
+import ReaderLayout from './layouts/ReaderLayout';
 
 const BASIC_SCREEN_OPTIONS: NativeStackNavigationOptions = {
   header: (props) => {
@@ -37,6 +38,9 @@ const COMIC_SCREEN_OPTIONS: NativeStackNavigationOptions = {
     );
   },
 };
+const READER_SCREEN_OPTIONS: NativeStackNavigationOptions = {
+  headerShown: false,
+};
 
 const Stack = createNativeStackNavigator();
 
@@ -59,6 +63,11 @@ function App(): JSX.Element {
             options={COMIC_SCREEN_OPTIONS}
             name="Comic"
             component={ComicDetailLayout}
+          />
+          <Stack.Screen
+            options={READER_SCREEN_OPTIONS}
+            name="Reader"
+            component={ReaderLayout}
           />
         </Stack.Navigator>
       </NavigationContainer>

@@ -18,6 +18,7 @@ const ComicDetailHeader: FunctionComponent<ComicDetailHeaderProps> = () => {
       <Text style={styles.title}>Comic</Text>
       <TouchableOpacity
         style={{ marginRight: 10 }}
+        // @ts-expect-error: router valid navigate
         onPress={() => navigation.navigate('Comic Reader')}>
         <Iconfont name="icon-24gl-home3" size={30} color={'white'}></Iconfont>
       </TouchableOpacity>

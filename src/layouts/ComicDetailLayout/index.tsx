@@ -1,5 +1,6 @@
 import { Iconfont } from '@/assets/font';
 import Tag from '@/components/Tag';
+import { useNavigation } from '@react-navigation/native';
 import {
   FunctionComponent,
   useCallback,
@@ -57,6 +58,8 @@ const ComicDetailLayout: FunctionComponent<ComicDetailLayoutProps> = () => {
   const tags = ['百合'],
     authors = ['mutou-koucha', 'mignon'];
 
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.comicDetailWrapper}>
@@ -67,7 +70,9 @@ const ComicDetailLayout: FunctionComponent<ComicDetailLayoutProps> = () => {
         <Text style={styles.title}>{title}</Text>
         <TagView name="Authors:" tags={authors} />
         <TagView name="Tags:" tags={tags} />
-        <TouchableOpacity style={[styles.baiscButton, styles.readButton]}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Reader')}
+          style={[styles.baiscButton, styles.readButton]}>
           <Text style={{ color: '#fff', fontSize: 20 }}>Read</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.baiscButton, styles.favoriteButton]}>
