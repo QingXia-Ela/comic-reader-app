@@ -43,8 +43,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: px2dp(20),
   },
   sliderStyle: {
-    flex: 1,
-    paddingHorizontal: px2dp(20),
+    width: '79%',
   },
   text: {
     color: 'white',

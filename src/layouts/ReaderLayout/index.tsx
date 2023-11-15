@@ -1,6 +1,6 @@
 import useCurrentTime from '@/hooks/useCurrentTime';
 import px2dp, { deviceHeight, deviceWidth } from '@/utils/ScreenUtils';
-import { Component, createContext, useState } from 'react';
+import { Component, createContext, useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -24,8 +24,13 @@ import { throttle } from 'lodash';
 
 interface ReaderLayoutProps {}
 
+let heightMap: Record<number, number> = {};
+
 const RenderItem = ({ index }: { index: number }) => {
-  const [height, setHeight] = useState(deviceHeight);
+  const [height, setHeight] = useState(heightMap[index] || deviceHeight);
+  useEffect(() => {
+    if (height > 0) heightMap[index] = height;
+  }, [height]);
   return (
     <TouchableWithoutFeedback>
       <Image
@@ -91,9 +96,12 @@ class ReaderLayout extends Component<
   }, 200);
 
   changePage = (page: number) => {
-    console.log(+new Date());
     this.setState({ currentPage: page });
   };
+
+  componentWillUnmount() {
+    heightMap = {};
+  }
 
   render() {
     const { currentPage } = this.state;
@@ -118,6 +126,7 @@ class ReaderLayout extends Component<
                     index: index - 1,
                   })
                 }
+                removeClippedSubviews={false}
                 onViewableItemsChanged={this.handleViewableItemsChanged}
               />
             </ReaderMenu>
