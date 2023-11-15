@@ -6,20 +6,27 @@ import {
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Iconfont } from '../../assets/font';
 import px2dp from '@/utils/ScreenUtils';
+import { ViewStyle } from 'react-native';
 
 interface NavigatorProps extends PropsWithChildren<NativeStackHeaderProps> {
   title?: string;
   showBack?: boolean;
+  height?: number;
 }
 
 const Navigator: FunctionComponent<NavigatorProps> = ({
   title,
   showBack,
   children,
+  height,
   ...props
 }) => {
+  const finalStyle: Array<ViewStyle> = [styles.headerWrapper];
+  if (height) {
+    finalStyle.push({ height });
+  }
   return (
-    <View style={styles.headerWrapper}>
+    <View style={finalStyle}>
       {showBack && (
         <TouchableOpacity>
           <Iconfont
@@ -32,7 +39,9 @@ const Navigator: FunctionComponent<NavigatorProps> = ({
       )}
       <View style={{ flex: 1 }}>
         {children ?? (
-          <Text style={styles.titleStyle}>{title ?? props.route.name}</Text>
+          <Text style={styles.titleStyle} numberOfLines={1}>
+            {title ?? props.route.name}
+          </Text>
         )}
       </View>
     </View>
@@ -48,7 +57,7 @@ const styles = StyleSheet.create({
     height: px2dp(100),
     paddingLeft: px2dp(30),
     paddingRight: px2dp(30),
-    backgroundColor: '#222',
+    backgroundColor: 'rgba(0, 0, 0, 0.84)',
   },
   titleStyle: {
     color: '#fff',

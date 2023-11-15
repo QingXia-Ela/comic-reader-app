@@ -1,13 +1,6 @@
 import useCurrentTime from '@/hooks/useCurrentTime';
 import px2dp, { deviceHeight, deviceWidth } from '@/utils/ScreenUtils';
-import {
-  Component,
-  FunctionComponent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { Component, createContext, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -24,6 +17,10 @@ import {
 import Config from 'react-native-config';
 import FastImage from 'react-native-fast-image';
 import ImageZoom from 'react-native-image-pan-zoom';
+import PageTip from './components/PageTip';
+import ReaderMenu from './components/ReaderMenu';
+import debounce from 'lodash/debounce';
+import { throttle } from 'lodash';
 
 interface ReaderLayoutProps {}
 
@@ -49,72 +46,8 @@ const RenderItem = ({ index }: { index: number }) => {
   );
 };
 
-const PageTip = ({ current, total }: { current: number; total: number }) => {
-  const currentTime = useCurrentTime(3000);
-  const str = `${new Date(currentTime).toLocaleTimeString('zh', {
-    hour: '2-digit',
-    hour12: false,
-    minute: '2-digit',
-  })}  ${current}/${total}`;
-  return (
-    <View style={pageTipStyles.container}>
-      <Text style={pageTipStyles.text}>{str}</Text>
-    </View>
-  );
-};
-
-const pageTipStyles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    paddingLeft: px2dp(20),
-    paddingRight: px2dp(10),
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    borderTopRightRadius: px2dp(10),
-  },
-  text: {
-    color: 'white',
-    fontSize: px2dp(26),
-  },
-});
-
-// const viewConfig = {
-//   viewAreaCoveragePercentThreshold: 50,
-// }
-
-// const ReaderLayout: FunctionComponent<ReaderLayoutProps> = () => {
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const viewConfig = useMemo(
-//     () => ({
-//       viewAreaCoveragePercentThreshold: 50,
-//     }),
-//     [],
-//   );
-//   const memoFunc = useCallback(
-//     ({ viewableItems }: { viewableItems: ViewToken[] }) => {
-//       if (viewableItems.length > 0) {
-//         setCurrentPage(viewableItems[0].index);
-//       }
-//     },
-//     [],
-//   );
-//   return (
-//     <SafeAreaView style={styles.container}>
-//       <TouchableWithoutFeedback>
-//         <FlatList
-//           style={styles.container}
-//           data={Array.from({ length: 20 }).map((_, index) => index)}
-//           renderItem={({ index }) => <RenderItem index={index + 1} />}
-//           keyExtractor={(item, index) => index.toString()}
-//           viewabilityConfig={viewConfig}
-//           onViewableItemsChanged={handleChange}
-//         />
-//       </TouchableWithoutFeedback>
-//       <PageTip current={currentPage} total={20} />
-//     </SafeAreaView>
-//   );
-// };
+let changeView = true;
+export const ProviderCtx = createContext<ReaderLayout>({} as ReaderLayout);
 
 class ReaderLayout extends Component<
   ReaderLayoutProps,
@@ -123,8 +56,9 @@ class ReaderLayout extends Component<
 > {
   state = {
     currentPage: 1,
+    flatListRef: null as unknown as FlatList,
+    totalPage: 56,
   };
-
   viewConfig: any;
   handleViewableItemsChanged: any;
 
@@ -132,16 +66,34 @@ class ReaderLayout extends Component<
     super(props);
     this.handleViewableItemsChanged = this.handleChange.bind(this);
     this.viewConfig = {
-      waitForInteraction: true,
       itemVisiblePercentThreshold: 95,
     };
   }
 
   handleChange({ viewableItems }: { viewableItems: ViewToken[] }) {
     if (viewableItems.length > 0) {
-      this.setState({ currentPage: (viewableItems[0].index || 0) + 1 });
+      const curVal = (viewableItems[0].index || 0) + 1;
+      if (changeView)
+        this.setState({ currentPage: (viewableItems[0].index || 0) + 1 });
+      else if (curVal === this.state.currentPage) {
+        this.setState({ currentPage: (viewableItems[0].index || 0) + 1 });
+        changeView = true;
+      }
     }
   }
+
+  setCurrentPage = debounce((page: number) => {
+    this.setState({ currentPage: page });
+    this.state.flatListRef?.scrollToIndex({
+      index: page - 1,
+    });
+    changeView = false;
+  }, 200);
+
+  changePage = (page: number) => {
+    console.log(+new Date());
+    this.setState({ currentPage: page });
+  };
 
   render() {
     const { currentPage } = this.state;
@@ -149,14 +101,27 @@ class ReaderLayout extends Component<
     return (
       <SafeAreaView style={styles.container}>
         <TouchableWithoutFeedback>
-          <FlatList
-            style={styles.container}
-            data={Array.from({ length: 56 }).map((_, index) => index)}
-            renderItem={({ index }) => <RenderItem index={index + 1} />}
-            keyExtractor={(item, index) => index.toString()}
-            viewabilityConfig={this.viewConfig}
-            onViewableItemsChanged={this.handleViewableItemsChanged}
-          />
+          <ProviderCtx.Provider value={this}>
+            <ReaderMenu
+              title="NoyAcg | [エゾクロテン (宮野木ジジ)] わるい子晴ちん 暫定版
+            (アイドルマスター シンデレラガールズ) [中国翻訳] [DL版]"
+              show={true}>
+              <FlatList
+                ref={(ref) => (this.state.flatListRef = ref!)}
+                style={styles.container}
+                data={Array.from({ length: 56 }).map((_, index) => index)}
+                renderItem={({ index }) => <RenderItem index={index + 1} />}
+                keyExtractor={(item, index) => index.toString()}
+                viewabilityConfig={this.viewConfig}
+                onScrollToIndexFailed={({ index }) =>
+                  this.state.flatListRef?.scrollToIndex({
+                    index: index - 1,
+                  })
+                }
+                onViewableItemsChanged={this.handleViewableItemsChanged}
+              />
+            </ReaderMenu>
+          </ProviderCtx.Provider>
         </TouchableWithoutFeedback>
         <PageTip current={currentPage} total={56} />
       </SafeAreaView>
