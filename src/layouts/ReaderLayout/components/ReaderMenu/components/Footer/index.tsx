@@ -6,28 +6,40 @@ import px2dp from '@/utils/ScreenUtils';
 import { ProviderCtx } from '@/layouts/ReaderLayout';
 interface ReaderMenuFooterProps {}
 
+let showSelfVale = false;
+
 const ReaderMenuFooter: FunctionComponent<ReaderMenuFooterProps> = () => {
   const [selfPage, setSelfPage] = useState(0);
   return (
     <ProviderCtx.Consumer>
-      {({ state, setCurrentPage }) => (
-        <View style={styles.container}>
-          <Text style={styles.text}>{selfPage || state.currentPage}</Text>
-          <Slider
-            style={styles.sliderStyle}
-            value={state.currentPage}
-            minimumValue={1}
-            onValueChange={setSelfPage}
-            maximumValue={state.totalPage}
-            step={1}
-            onSlidingComplete={setCurrentPage}
-            thumbStyle={styles.thumbStyle}
-            minimumTrackTintColor="#eee"
-            maximumTrackTintColor="#555"
-          />
-          <Text style={styles.text}>{state.totalPage}</Text>
-        </View>
-      )}
+      {({ state, setCurrentPage }) => {
+        return (
+          <View style={styles.container}>
+            <Text style={styles.text}>
+              {showSelfVale ? selfPage : state.currentPage}
+            </Text>
+            <Slider
+              style={styles.sliderStyle}
+              value={state.currentPage}
+              minimumValue={1}
+              onValueChange={(v) => {
+                showSelfVale = true;
+                setSelfPage(v);
+              }}
+              maximumValue={state.totalPage}
+              step={1}
+              onSlidingComplete={(v) => {
+                setCurrentPage(v);
+                showSelfVale = false;
+              }}
+              thumbStyle={styles.thumbStyle}
+              minimumTrackTintColor="#eee"
+              maximumTrackTintColor="#555"
+            />
+            <Text style={styles.text}>{state.totalPage}</Text>
+          </View>
+        );
+      }}
     </ProviderCtx.Consumer>
   );
 };
