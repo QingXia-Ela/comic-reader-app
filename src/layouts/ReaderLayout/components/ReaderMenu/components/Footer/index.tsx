@@ -20,7 +20,7 @@ const ReaderMenuFooter: FunctionComponent<ReaderMenuFooterProps> = () => {
             </Text>
             <Slider
               style={styles.sliderStyle}
-              value={state.currentPage}
+              value={showSelfVale ? selfPage : state.currentPage}
               minimumValue={1}
               onValueChange={(v) => {
                 showSelfVale = true;

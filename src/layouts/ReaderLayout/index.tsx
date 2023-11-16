@@ -1,6 +1,6 @@
 import useCurrentTime from '@/hooks/useCurrentTime';
 import px2dp, { deviceHeight, deviceWidth } from '@/utils/ScreenUtils';
-import { Component, createContext, useState, useEffect } from 'react';
+import { Component, createContext, useState, useEffect, memo } from 'react';
 import {
   StyleSheet,
   Text,
@@ -24,7 +24,8 @@ import { throttle } from 'lodash';
 
 interface ReaderLayoutProps {}
 
-let heightMap: Record<number, number> = {};
+const heightMap = new Array(400).fill(0);
+let heighestImg = 0;
 
 const RenderItem = ({
   index,
@@ -33,10 +34,19 @@ const RenderItem = ({
   index: number;
   onPress?: () => void;
 }) => {
-  const [height, setHeight] = useState(heightMap[index] || deviceHeight);
+  const [height, setHeight] = useState(heightMap[index] || heighestImg);
   useEffect(() => {
-    if (height > 0) heightMap[index] = height;
+    if (height > 0) {
+      heightMap[index] = height;
+      if (height > heighestImg) {
+        heighestImg = height;
+      }
+    }
   }, [height]);
+  useEffect(() => {
+    console.log('render', index);
+  }, []);
+
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <Image
@@ -57,6 +67,9 @@ const RenderItem = ({
   );
 };
 
+const CachedItemMap = new Array(400).fill(null);
+const CachedItem = memo(RenderItem);
+
 let changeView = true;
 export const ProviderCtx = createContext<ReaderLayout>({} as ReaderLayout);
 
@@ -67,7 +80,7 @@ class ReaderLayout extends Component<
 > {
   state = {
     currentPage: 1,
-    flatListRef: null as unknown as FlatList,
+    flatListRef: null as unknown as VirtualizedList<any>,
     totalPage: 56,
     showMenu: false,
   };
@@ -78,6 +91,7 @@ class ReaderLayout extends Component<
     super(props);
     this.handleViewableItemsChanged = this.handleChange.bind(this);
     this.viewConfig = {
+      minimumViewTime: 1,
       itemVisiblePercentThreshold: 95,
     };
   }
@@ -85,22 +99,21 @@ class ReaderLayout extends Component<
   handleChange({ viewableItems }: { viewableItems: ViewToken[] }) {
     if (viewableItems.length > 0) {
       const curVal = (viewableItems[0].index || 0) + 1;
-      if (changeView)
-        this.setState({ currentPage: (viewableItems[0].index || 0) + 1 });
-      else if (curVal === this.state.currentPage) {
-        this.setState({ currentPage: (viewableItems[0].index || 0) + 1 });
+      this.setState({ currentPage: (viewableItems[0].index || 0) + 1 });
+      if (curVal === this.state.currentPage) {
         changeView = true;
       }
     }
   }
 
   setCurrentPage = debounce((page: number) => {
-    this.setState({ currentPage: page });
     this.state.flatListRef?.scrollToIndex({
       index: page - 1,
     });
     changeView = false;
-  }, 200);
+    console.log(page);
+    this.setState({ currentPage: page });
+  }, 100);
 
   changePage = (page: number) => {
     this.setState({ currentPage: page });
@@ -111,8 +124,39 @@ class ReaderLayout extends Component<
   };
 
   componentWillUnmount() {
-    heightMap = {};
+    heightMap.fill(0);
   }
+
+  MemoList = memo(() => (
+    <VirtualizedList
+      ref={(ref) => (this.state.flatListRef = ref!)}
+      style={styles.container}
+      data={Array.from({ length: 56 }).map((_, index) => index)}
+      renderItem={({ index }) => (
+        <CachedItem index={index + 1} onPress={this.toggleMenu} />
+      )}
+      getItem={({ index }) => index}
+      getItemCount={() => 56}
+      keyExtractor={(item, index) => index.toString()}
+      viewabilityConfig={this.viewConfig}
+      getItemLayout={(data, index) => {
+        const finalHeight = heightMap[index] || heighestImg;
+        return {
+          length: finalHeight,
+          offset: finalHeight * index,
+          index,
+        };
+      }}
+      onScrollToIndexFailed={({ index }) => {
+        this.state.flatListRef?.scrollToOffset({
+          offset: (heightMap[index] || heighestImg) * index,
+        });
+      }}
+      windowSize={7}
+      // removeClippedSubviews={false}
+      onViewableItemsChanged={this.handleViewableItemsChanged}
+    />
+  ));
 
   render() {
     const { currentPage, showMenu } = this.state;
@@ -125,26 +169,7 @@ class ReaderLayout extends Component<
               title="NoyAcg | [エゾクロテン (宮野木ジジ)] わるい子晴ちん 暫定版
             (アイドルマスター シンデレラガールズ) [中国翻訳] [DL版]"
               show={showMenu}>
-              <FlatList
-                ref={(ref) => (this.state.flatListRef = ref!)}
-                style={styles.container}
-                data={Array.from({ length: 56 }).map((_, index) => index)}
-                renderItem={({ index }) => (
-                  <RenderItem
-                    index={index + 1}
-                    onPress={() => this.toggleMenu()}
-                  />
-                )}
-                keyExtractor={(item, index) => index.toString()}
-                viewabilityConfig={this.viewConfig}
-                onScrollToIndexFailed={({ index }) =>
-                  this.state.flatListRef?.scrollToIndex({
-                    index: index - 1,
-                  })
-                }
-                removeClippedSubviews={false}
-                onViewableItemsChanged={this.handleViewableItemsChanged}
-              />
+              <this.MemoList />
             </ReaderMenu>
           </ProviderCtx.Provider>
         </TouchableWithoutFeedback>
@@ -169,6 +194,7 @@ const styles = StyleSheet.create({
   },
   img: {
     width: '100%',
+    backgroundColor: 'aqua',
   },
 });
 
