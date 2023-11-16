@@ -26,13 +26,19 @@ interface ReaderLayoutProps {}
 
 let heightMap: Record<number, number> = {};
 
-const RenderItem = ({ index }: { index: number }) => {
+const RenderItem = ({
+  index,
+  onPress,
+}: {
+  index: number;
+  onPress?: () => void;
+}) => {
   const [height, setHeight] = useState(heightMap[index] || deviceHeight);
   useEffect(() => {
     if (height > 0) heightMap[index] = height;
   }, [height]);
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={onPress}>
       <Image
         style={[styles.img, { height }]}
         onLoad={({ nativeEvent }) => {
@@ -63,6 +69,7 @@ class ReaderLayout extends Component<
     currentPage: 1,
     flatListRef: null as unknown as FlatList,
     totalPage: 56,
+    showMenu: false,
   };
   viewConfig: any;
   handleViewableItemsChanged: any;
@@ -99,12 +106,16 @@ class ReaderLayout extends Component<
     this.setState({ currentPage: page });
   };
 
+  toggleMenu = () => {
+    this.setState({ showMenu: !this.state.showMenu });
+  };
+
   componentWillUnmount() {
     heightMap = {};
   }
 
   render() {
-    const { currentPage } = this.state;
+    const { currentPage, showMenu } = this.state;
 
     return (
       <SafeAreaView style={styles.container}>
@@ -113,12 +124,17 @@ class ReaderLayout extends Component<
             <ReaderMenu
               title="NoyAcg | [エゾクロテン (宮野木ジジ)] わるい子晴ちん 暫定版
             (アイドルマスター シンデレラガールズ) [中国翻訳] [DL版]"
-              show={true}>
+              show={showMenu}>
               <FlatList
                 ref={(ref) => (this.state.flatListRef = ref!)}
                 style={styles.container}
                 data={Array.from({ length: 56 }).map((_, index) => index)}
-                renderItem={({ index }) => <RenderItem index={index + 1} />}
+                renderItem={({ index }) => (
+                  <RenderItem
+                    index={index + 1}
+                    onPress={() => this.toggleMenu()}
+                  />
+                )}
                 keyExtractor={(item, index) => index.toString()}
                 viewabilityConfig={this.viewConfig}
                 onScrollToIndexFailed={({ index }) =>

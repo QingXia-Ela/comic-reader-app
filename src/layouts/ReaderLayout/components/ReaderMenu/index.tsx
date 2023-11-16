@@ -15,17 +15,19 @@ const ReaderMenu: FunctionComponent<ReaderMenuProps> = ({
   children,
 }) => {
   return (
-    show && (
-      <>
+    <>
+      {show && (
         <View style={styles.topMenu}>
           <ReaderMenuHeader height={px2dp(110)} title={title} />
         </View>
-        {children}
+      )}
+      {children}
+      {show && (
         <View style={styles.bottomMenu}>
           <ReaderMenuFooter />
         </View>
-      </>
-    )
+      )}
+    </>
   );
 };
 
