@@ -16,17 +16,13 @@ const ReaderMenu: FunctionComponent<ReaderMenuProps> = ({
 }) => {
   return (
     <>
-      {show && (
-        <View style={styles.topMenu}>
-          <ReaderMenuHeader height={px2dp(110)} title={title} />
-        </View>
-      )}
+      <View style={[styles.topMenu, { display: show ? 'flex' : 'none' }]}>
+        <ReaderMenuHeader height={px2dp(110)} title={title} />
+      </View>
       {children}
-      {show && (
-        <View style={styles.bottomMenu}>
-          <ReaderMenuFooter />
-        </View>
-      )}
+      <View style={[styles.bottomMenu, { display: show ? 'flex' : 'none' }]}>
+        <ReaderMenuFooter />
+      </View>
     </>
   );
 };

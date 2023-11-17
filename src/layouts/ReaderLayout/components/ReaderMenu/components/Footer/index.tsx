@@ -1,46 +1,47 @@
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState, useCallback } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { View } from 'react-native';
 import { Slider } from '@rneui/base';
 import px2dp from '@/utils/ScreenUtils';
-import { ProviderCtx } from '@/layouts/ReaderLayout';
+import { useStore } from '@nanostores/react';
+import $reader, { changePage, showPage } from '@/store/reader';
+import { debounce, throttle } from 'lodash';
 interface ReaderMenuFooterProps {}
 
-let showSelfVale = false;
-
 const ReaderMenuFooter: FunctionComponent<ReaderMenuFooterProps> = () => {
-  const [selfPage, setSelfPage] = useState(0);
+  const [selfPage, setSelfPage] = useState(1);
+  const debounceChangePage = useCallback(
+    debounce((v: number) => {
+      setSelfPage(v);
+      changePage(v - 1);
+    }, 200),
+    [],
+  );
+
+  const throttleSetSelfPage = useCallback(
+    throttle((v: number) => {
+      setSelfPage(v);
+    }, 33),
+    [],
+  );
+
   return (
-    <ProviderCtx.Consumer>
-      {({ state, setCurrentPage }) => {
-        return (
-          <View style={styles.container}>
-            <Text style={styles.text}>
-              {showSelfVale ? selfPage : state.currentPage}
-            </Text>
-            <Slider
-              style={styles.sliderStyle}
-              value={showSelfVale ? selfPage : state.currentPage}
-              minimumValue={1}
-              onValueChange={(v) => {
-                showSelfVale = true;
-                setSelfPage(v);
-              }}
-              maximumValue={state.totalPage}
-              step={1}
-              onSlidingComplete={(v) => {
-                setCurrentPage(v);
-                showSelfVale = false;
-              }}
-              thumbStyle={styles.thumbStyle}
-              minimumTrackTintColor="#eee"
-              maximumTrackTintColor="#555"
-            />
-            <Text style={styles.text}>{state.totalPage}</Text>
-          </View>
-        );
-      }}
-    </ProviderCtx.Consumer>
+    <View style={styles.container}>
+      <Text style={styles.text}>{selfPage}</Text>
+      <Slider
+        style={styles.sliderStyle}
+        value={selfPage}
+        minimumValue={1}
+        onValueChange={throttleSetSelfPage}
+        maximumValue={56}
+        step={1}
+        onSlidingComplete={debounceChangePage}
+        thumbStyle={styles.thumbStyle}
+        minimumTrackTintColor="#eee"
+        maximumTrackTintColor="#555"
+      />
+      <Text style={styles.text}>{56}</Text>
+    </View>
   );
 };
 

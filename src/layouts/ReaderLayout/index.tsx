@@ -21,6 +21,9 @@ import PageTip from './components/PageTip';
 import ReaderMenu from './components/ReaderMenu';
 import debounce from 'lodash/debounce';
 import { throttle } from 'lodash';
+import ImgList from './components/ImgList';
+import $reader, { reset, showPage } from '@/store/reader';
+import { useStore } from '@nanostores/react';
 
 interface ReaderLayoutProps {}
 
@@ -43,9 +46,6 @@ const RenderItem = ({
       }
     }
   }, [height]);
-  useEffect(() => {
-    console.log('render', index);
-  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -67,116 +67,28 @@ const RenderItem = ({
   );
 };
 
-const CachedItemMap = new Array(400).fill(null);
-const CachedItem = memo(RenderItem);
-
-let changeView = true;
-export const ProviderCtx = createContext<ReaderLayout>({} as ReaderLayout);
-
-class ReaderLayout extends Component<
-  ReaderLayoutProps,
-  Record<string, any>,
-  any
-> {
-  state = {
-    currentPage: 1,
-    flatListRef: null as unknown as VirtualizedList<any>,
-    totalPage: 56,
-    showMenu: false,
-  };
-  viewConfig: any;
-  handleViewableItemsChanged: any;
-
-  constructor(props: any) {
-    super(props);
-    this.handleViewableItemsChanged = this.handleChange.bind(this);
-    this.viewConfig = {
-      minimumViewTime: 1,
-      itemVisiblePercentThreshold: 95,
+function ReaderLayout() {
+  const { showMenu } = useStore($reader);
+  const realPage = showPage.get();
+  useEffect(() => {
+    return () => {
+      reset();
     };
-  }
+  }, []);
 
-  handleChange({ viewableItems }: { viewableItems: ViewToken[] }) {
-    if (viewableItems.length > 0) {
-      const curVal = (viewableItems[0].index || 0) + 1;
-      this.setState({ currentPage: (viewableItems[0].index || 0) + 1 });
-      if (curVal === this.state.currentPage) {
-        changeView = true;
-      }
-    }
-  }
-
-  setCurrentPage = debounce((page: number) => {
-    this.state.flatListRef?.scrollToIndex({
-      index: page - 1,
-    });
-    changeView = false;
-    console.log(page);
-    this.setState({ currentPage: page });
-  }, 100);
-
-  changePage = (page: number) => {
-    this.setState({ currentPage: page });
-  };
-
-  toggleMenu = () => {
-    this.setState({ showMenu: !this.state.showMenu });
-  };
-
-  componentWillUnmount() {
-    heightMap.fill(0);
-  }
-
-  MemoList = memo(() => (
-    <VirtualizedList
-      ref={(ref) => (this.state.flatListRef = ref!)}
-      style={styles.container}
-      data={Array.from({ length: 56 }).map((_, index) => index)}
-      renderItem={({ index }) => (
-        <CachedItem index={index + 1} onPress={this.toggleMenu} />
-      )}
-      getItem={({ index }) => index}
-      getItemCount={() => 56}
-      keyExtractor={(item, index) => index.toString()}
-      viewabilityConfig={this.viewConfig}
-      getItemLayout={(data, index) => {
-        const finalHeight = heightMap[index] || heighestImg;
-        return {
-          length: finalHeight,
-          offset: finalHeight * index,
-          index,
-        };
-      }}
-      onScrollToIndexFailed={({ index }) => {
-        this.state.flatListRef?.scrollToOffset({
-          offset: (heightMap[index] || heighestImg) * index,
-        });
-      }}
-      windowSize={7}
-      // removeClippedSubviews={false}
-      onViewableItemsChanged={this.handleViewableItemsChanged}
-    />
-  ));
-
-  render() {
-    const { currentPage, showMenu } = this.state;
-
-    return (
-      <SafeAreaView style={styles.container}>
-        <TouchableWithoutFeedback>
-          <ProviderCtx.Provider value={this}>
-            <ReaderMenu
-              title="NoyAcg | [エゾクロテン (宮野木ジジ)] わるい子晴ちん 暫定版
-            (アイドルマスター シンデレラガールズ) [中国翻訳] [DL版]"
-              show={showMenu}>
-              <this.MemoList />
-            </ReaderMenu>
-          </ProviderCtx.Provider>
-        </TouchableWithoutFeedback>
-        <PageTip current={currentPage} total={56} />
-      </SafeAreaView>
-    );
-  }
+  return (
+    <SafeAreaView style={styles.container}>
+      <TouchableWithoutFeedback>
+        <ReaderMenu
+          title="NoyAcg | [エゾクロテン (宮野木ジジ)] わるい子晴ちん 暫定版
+        (アイドルマスター シンデレラガールズ) [中国翻訳] [DL版]"
+          show={showMenu}>
+          <ImgList />
+        </ReaderMenu>
+      </TouchableWithoutFeedback>
+      <PageTip current={realPage} total={56} />
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
