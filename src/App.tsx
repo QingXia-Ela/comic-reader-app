@@ -50,7 +50,7 @@ function App(): JSX.Element {
   return (
     <SWRConfig
       value={{
-        refreshInterval: 60000,
+        refreshInterval: 240000,
         fetcher,
       }}>
       <View style={globalStyles.container}>
