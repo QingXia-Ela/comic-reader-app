@@ -1,9 +1,13 @@
 import { FunctionComponent, useState, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, RefreshControl } from 'react-native';
+import { Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import sleep from '@/utils/sleep';
 import ComicItem from '@/components/ComicItem';
 import Pagination from '@/components/Pagination';
 import { useNavigation } from '@react-navigation/native';
+import useSWR from 'swr';
+import { $List, Comic } from 'types:comic';
+import Loading from '@/components/Loading';
+import { BasicResponse } from 'types:response';
 
 interface OverviewProps {}
 
@@ -17,22 +21,33 @@ const Overview: FunctionComponent<OverviewProps> = () => {
 
   const navigation = useNavigation();
 
+  const { data, error, isLoading } =
+    useSWR<BasicResponse<$List>>('/list?count=10');
+
+  if (isLoading) return <Loading />;
+  if (error) return <Text>error</Text>;
+  const {
+    data: { data: list, hasMore, total },
+  } = data!;
+
   return (
     <ScrollView
       style={styles.viewInner}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
-      <ComicItem
-        name="NoyAcg | [エゾクロテン (宮野木ジジ)] わるい子晴ちん 暫定版
-      (アイドルマスター シンデレラガールズ) [中国翻訳] [DL版]"
-        authors={['mutou-koucha', 'mignon']}
-        tags={['百合']}
-        imgPath={require('@/assets/images/00002.jpg')}
-        // @ts-expect-error: stupid typescript type generate
-        onPress={() => navigation.navigate<any>('Comic')}
-      />
-      <Pagination total={100} current={1} />
+      {list.map(({ title, id, authors, tags }) => (
+        <ComicItem
+          key={id}
+          name={title}
+          authors={authors}
+          tags={tags}
+          imgPath={require('@/assets/images/00002.jpg')}
+          // @ts-expect-error: stupid typescript type generate
+          onPress={() => navigation.navigate<any>('Comic')}
+        />
+      ))}
+      <Pagination total={total} current={1} />
     </ScrollView>
   );
 };

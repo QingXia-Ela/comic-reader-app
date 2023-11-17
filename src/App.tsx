@@ -14,6 +14,8 @@ import SearchHeader from './layouts/SearchLayout/components/Header';
 import ComicDetailLayout from './layouts/ComicDetailLayout';
 import ComicDetailHeader from './layouts/ComicDetailLayout/Header';
 import ReaderLayout from './layouts/ReaderLayout';
+import { SWRConfig } from 'swr';
+import { fetcher } from './api/request';
 
 const BASIC_SCREEN_OPTIONS: NativeStackNavigationOptions = {
   header: (props) => {
@@ -46,32 +48,38 @@ const Stack = createNativeStackNavigator();
 
 function App(): JSX.Element {
   return (
-    <View style={globalStyles.container}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            options={BASIC_SCREEN_OPTIONS}
-            name="Comic Reader"
-            component={BasicLayout}
-          />
-          <Stack.Screen
-            options={SEARCH_SCREEN_OPTIONS}
-            name="Search"
-            component={SearchLayout}
-          />
-          <Stack.Screen
-            options={COMIC_SCREEN_OPTIONS}
-            name="Comic"
-            component={ComicDetailLayout}
-          />
-          <Stack.Screen
-            options={READER_SCREEN_OPTIONS}
-            name="Reader"
-            component={ReaderLayout}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </View>
+    <SWRConfig
+      value={{
+        refreshInterval: 60000,
+        fetcher,
+      }}>
+      <View style={globalStyles.container}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              options={BASIC_SCREEN_OPTIONS}
+              name="Comic Reader"
+              component={BasicLayout}
+            />
+            <Stack.Screen
+              options={SEARCH_SCREEN_OPTIONS}
+              name="Search"
+              component={SearchLayout}
+            />
+            <Stack.Screen
+              options={COMIC_SCREEN_OPTIONS}
+              name="Comic"
+              component={ComicDetailLayout}
+            />
+            <Stack.Screen
+              options={READER_SCREEN_OPTIONS}
+              name="Reader"
+              component={ReaderLayout}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </View>
+    </SWRConfig>
   );
 }
 

@@ -1,7 +1,14 @@
 import { atom } from 'nanostores';
 import * as Keychain from 'react-native-keychain';
 
-const $settings = atom<Record<string, string | null>>({
+interface Settings {
+  BackendAddress: string | null;
+  AuthHeaderKey: string | null;
+  AuthHeaderValue: string | null;
+  ImageDecryptKey: string | null;
+}
+
+const $settings = atom<Settings>({
   BackendAddress: null,
   AuthHeaderKey: null,
   AuthHeaderValue: null,
