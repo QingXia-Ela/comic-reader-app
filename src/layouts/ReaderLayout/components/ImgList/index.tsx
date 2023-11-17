@@ -76,7 +76,7 @@ let scrolling = false;
 const ImgList: FunctionComponent<ImgListProps> = forwardRef<
   VirtualizedList<any>
 >(function ({}, outerRef) {
-  const { currentPage } = useStore($reader);
+  const { currentPage, totalPage } = useStore($reader);
   const listRef = useRef<VirtualizedList<any>>(null);
   useEffect(() => {
     if (!scrolling)
@@ -96,12 +96,12 @@ const ImgList: FunctionComponent<ImgListProps> = forwardRef<
         }
       }}
       style={styles.container}
-      data={Array.from({ length: 56 }).map((_, index) => index)}
+      data={Array.from({ length: totalPage }).map((_, index) => index)}
       renderItem={({ index }) => (
         <CachedItem index={index + 1} onPress={toggleMenu} />
       )}
       getItem={({ index }) => index}
-      getItemCount={() => 56}
+      getItemCount={() => totalPage}
       keyExtractor={(item, index) => index.toString()}
       viewabilityConfig={StaticNamespace.prototype.viewConfig}
       getItemLayout={(data, index) => {

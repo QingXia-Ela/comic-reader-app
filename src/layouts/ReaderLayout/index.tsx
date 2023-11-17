@@ -68,7 +68,7 @@ const RenderItem = ({
 };
 
 function ReaderLayout() {
-  const { showMenu } = useStore($reader);
+  const { showMenu, totalPage } = useStore($reader);
   const realPage = showPage.get();
   useEffect(() => {
     return () => {
@@ -86,7 +86,7 @@ function ReaderLayout() {
           <ImgList />
         </ReaderMenu>
       </TouchableWithoutFeedback>
-      <PageTip current={realPage} total={56} />
+      <PageTip current={realPage} total={totalPage} />
     </SafeAreaView>
   );
 }

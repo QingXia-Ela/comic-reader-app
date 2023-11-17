@@ -8,18 +8,24 @@ import $reader, { changePage, showPage } from '@/store/reader';
 import { debounce, throttle } from 'lodash';
 interface ReaderMenuFooterProps {}
 
+let showSelfPage = false;
+
 const ReaderMenuFooter: FunctionComponent<ReaderMenuFooterProps> = () => {
   const [selfPage, setSelfPage] = useState(1);
+  const { totalPage } = useStore($reader);
+  const realPage = showPage.get();
   const debounceChangePage = useCallback(
     debounce((v: number) => {
       setSelfPage(v);
       changePage(v - 1);
+      showSelfPage = false;
     }, 200),
     [],
   );
 
   const throttleSetSelfPage = useCallback(
     throttle((v: number) => {
+      showSelfPage = true;
       setSelfPage(v);
     }, 33),
     [],
@@ -27,20 +33,20 @@ const ReaderMenuFooter: FunctionComponent<ReaderMenuFooterProps> = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{selfPage}</Text>
+      <Text style={styles.text}>{showSelfPage ? selfPage : realPage}</Text>
       <Slider
         style={styles.sliderStyle}
         value={selfPage}
         minimumValue={1}
         onValueChange={throttleSetSelfPage}
-        maximumValue={56}
+        maximumValue={totalPage}
         step={1}
         onSlidingComplete={debounceChangePage}
         thumbStyle={styles.thumbStyle}
         minimumTrackTintColor="#eee"
         maximumTrackTintColor="#555"
       />
-      <Text style={styles.text}>{56}</Text>
+      <Text style={styles.text}>{totalPage}</Text>
     </View>
   );
 };
