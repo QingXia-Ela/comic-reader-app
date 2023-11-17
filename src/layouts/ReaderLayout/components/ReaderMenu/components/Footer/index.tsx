@@ -14,14 +14,11 @@ const ReaderMenuFooter: FunctionComponent<ReaderMenuFooterProps> = () => {
   const [selfPage, setSelfPage] = useState(1);
   const { totalPage } = useStore($reader);
   const realPage = showPage.get();
-  const debounceChangePage = useCallback(
-    debounce((v: number) => {
-      setSelfPage(v);
-      changePage(v - 1);
-      showSelfPage = false;
-    }, 200),
-    [],
-  );
+  const debounceChangePage = useCallback((v: number) => {
+    setSelfPage(v);
+    changePage(v - 1);
+    showSelfPage = false;
+  }, []);
 
   const throttleSetSelfPage = useCallback(
     throttle((v: number) => {
@@ -36,7 +33,7 @@ const ReaderMenuFooter: FunctionComponent<ReaderMenuFooterProps> = () => {
       <Text style={styles.text}>{showSelfPage ? selfPage : realPage}</Text>
       <Slider
         style={styles.sliderStyle}
-        value={selfPage}
+        value={showSelfPage ? selfPage : realPage}
         minimumValue={1}
         onValueChange={throttleSetSelfPage}
         maximumValue={totalPage}
