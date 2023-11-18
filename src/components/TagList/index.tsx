@@ -1,12 +1,5 @@
 import { FunctionComponent, useMemo } from 'react';
-import {
-  StyleSheet,
-  ScrollView,
-  Image,
-  Text,
-  View,
-  SafeAreaView,
-} from 'react-native';
+import { StyleSheet, ScrollView, View, SafeAreaView } from 'react-native';
 import Tag from '../Tag';
 import px2dp from '@/utils/ScreenUtils';
 

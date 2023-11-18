@@ -1,7 +1,8 @@
 import { FunctionComponent } from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import TagList from '../TagList';
 import px2dp from '@/utils/ScreenUtils';
+import { Image } from '@rneui/base';
 
 interface ComicItemProps extends Partial<View> {
   imgPath: string;

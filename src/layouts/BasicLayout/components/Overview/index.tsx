@@ -43,7 +43,7 @@ const Overview: FunctionComponent<OverviewProps> = () => {
           authors={authors}
           tags={tags}
           imgPath={require('@/assets/images/00002.jpg')}
-          // @ts-expect-error: stupid typescript type generate
+          // @ts-expect-error: stupid typescript type generate for navigate
           onPress={() => navigation.navigate<any>('Comic')}
         />
       ))}

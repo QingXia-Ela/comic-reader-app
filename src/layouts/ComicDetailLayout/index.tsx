@@ -14,10 +14,10 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Image,
   ScrollView,
   Button,
 } from 'react-native';
+import { Image } from '@rneui/base';
 
 const TagView = ({
   name = '',

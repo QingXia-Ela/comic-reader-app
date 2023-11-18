@@ -5,6 +5,7 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import Overview from './components/Overview';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Settings from './components/Settings';
+import useDecryptImg from '@/hooks/useDecryptImg';
 
 interface BasicLayoutProps extends PropsWithChildren {
   navigation: NavigationProp<ReactNavigation.RootParamList>;
@@ -26,6 +27,7 @@ const TabScreen = ({ choose }: any) => {
 
 const BasicLayout: FunctionComponent<BasicLayoutProps> = ({ navigation }) => {
   const [tab, setTab] = useState('Overview');
+  const a = useDecryptImg('/img/998543/00001.jpg');
   return (
     <View style={styles.viewWrapper}>
       <View style={{ flex: 1 }}>
