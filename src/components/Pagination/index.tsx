@@ -35,8 +35,7 @@ const PaginationButton = ({ children, active, onPress }: any) => (
 interface PaginationButtonGroupProps {
   total: number;
   current: number;
-  /** @default 10 */
-  eachPageCount?: number;
+  eachPageCount: number;
   /** @default 5 */
   maxCountButton?: number;
   onChange: (page: number) => void;
@@ -45,7 +44,7 @@ interface PaginationButtonGroupProps {
 const PaginationButtonGroup = ({
   total,
   current,
-  eachPageCount = 10,
+  eachPageCount,
   maxCountButton = 5,
   onChange,
 }: PaginationButtonGroupProps) => {
@@ -154,6 +153,7 @@ const Pagination: FunctionComponent<PaginationProps> = ({
           total={total}
           current={page}
           onChange={setPage}
+          eachPageCount={eachPageCount}
           maxCountButton={maxCountButton}
         />
         <PaginationButton onPress={() => page < pageCount && setPage(page + 1)}>
@@ -192,6 +192,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     width: '100%',
+    paddingBottom: px2dp(30),
   },
   paginationButtonWrapper: {
     display: 'flex',

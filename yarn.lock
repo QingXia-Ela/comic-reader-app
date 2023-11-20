@@ -1712,6 +1712,11 @@
     prompts "^2.4.0"
     semver "^7.5.2"
 
+"@react-native-community/netinfo@^11.1.0":
+  version "11.1.0"
+  resolved "https://registry.npmmirror.com/@react-native-community/netinfo/-/netinfo-11.1.0.tgz#b3b2ab741a5d935e445685ade8a53d48775e082b"
+  integrity sha512-pIbCuqgrY7SkngAcjUs9fMzNh1h4soQMVw1IeGp1HN5//wox3fUVOuvyIubTscUbdLFKiltJAiuQek7Nhx1bqA==
+
 "@react-native/assets-registry@^0.72.0":
   version "0.72.0"
   resolved "https://registry.npmmirror.com/@react-native/assets-registry/-/assets-registry-0.72.0.tgz#c82a76a1d86ec0c3907be76f7faf97a32bbed05d"

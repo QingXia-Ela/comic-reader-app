@@ -18,6 +18,11 @@ interface ComicItemProps extends Partial<View> {
   onPress?: () => void;
 }
 
+/**
+ * Comic Item on list
+ *
+ * @height `px2dp(260)` you may need this when your scroll view not really smooth
+ */
 const ComicItem: FunctionComponent<ComicItemProps> = ({
   name,
   authors,
@@ -42,7 +47,7 @@ const ComicItem: FunctionComponent<ComicItemProps> = ({
             style={styles.leftImg}
           />
         ) : (
-          <Loading />
+          <View></View>
         )}
       </TouchableOpacity>
       <View style={styles.rightInfo}>
