@@ -79,9 +79,11 @@ const singleSettingStyles = StyleSheet.create({
 const SettingsScreen: FunctionComponent = () => {
   const settings = useStore($settings);
 
-  return Object.entries(settings).map(([key, value]) => (
-    <SingleSetting key={key} name={key} value={value} />
-  ));
+  return Object.entries(settings)
+    .filter(([key]) => key !== 'init')
+    .map(([key, value]) => (
+      <SingleSetting key={key} name={key} value={value} />
+    ));
 };
 
 const Settings: FunctionComponent<SettingsProps> = () => {

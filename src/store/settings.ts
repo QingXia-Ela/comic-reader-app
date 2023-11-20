@@ -6,6 +6,7 @@ interface Settings {
   AuthHeaderKey: string | null;
   AuthHeaderValue: string | null;
   ImageDecryptKey: string | null;
+  init?: boolean;
 }
 
 const $settings = atom<Settings>({
@@ -13,16 +14,21 @@ const $settings = atom<Settings>({
   AuthHeaderKey: null,
   AuthHeaderValue: null,
   ImageDecryptKey: null,
+  init: false,
 });
 
 Keychain.getGenericPassword({ service: 'settings' }).then((res) => {
   if (res) {
-    $settings.set(JSON.parse(res.password));
+    const obj = JSON.parse(res.password);
+    obj.init = true;
+    $settings.set(obj);
   }
 });
 
 $settings.listen((state) => {
-  Keychain.setGenericPassword('settings', JSON.stringify(state), {
+  const obj = { ...state };
+  delete obj.init;
+  Keychain.setGenericPassword('settings', JSON.stringify(obj), {
     service: 'settings',
   });
 });

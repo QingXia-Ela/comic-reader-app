@@ -1,33 +1,49 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import TagList from '../TagList';
 import px2dp from '@/utils/ScreenUtils';
 import { Image } from '@rneui/base';
+import useDecryptImg from '@/hooks/useDecryptImg';
+import Loading from '../Loading';
 
 interface ComicItemProps extends Partial<View> {
-  imgPath: string;
   name: string;
   authors: string[];
   tags?: Parameters<typeof TagList>[0]['tags'];
+  id: number;
+  /**
+   * source img path, will decrypt by component
+   */
+  cover?: string;
   onPress?: () => void;
 }
 
 const ComicItem: FunctionComponent<ComicItemProps> = ({
-  imgPath,
   name,
   authors,
   onPress,
   tags,
+  id,
+  cover,
   ...props
 }) => {
+  const { uri } = useDecryptImg(`/img/${id}/${cover}`);
   return (
     <View style={styles.wrapper} {...props}>
       <TouchableOpacity
         style={styles.leftImgWrapper}
         onPress={onPress}
         activeOpacity={0.7}>
-        {/* @ts-expect-error: source can resolve img */}
-        <Image source={imgPath} style={styles.leftImg} />
+        {uri.length ? (
+          <Image
+            source={{
+              uri,
+            }}
+            style={styles.leftImg}
+          />
+        ) : (
+          <Loading />
+        )}
       </TouchableOpacity>
       <View style={styles.rightInfo}>
         <TouchableOpacity onPress={onPress} activeOpacity={0.7}>

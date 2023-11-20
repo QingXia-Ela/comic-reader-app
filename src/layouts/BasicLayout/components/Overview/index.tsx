@@ -1,4 +1,4 @@
-import { FunctionComponent, useState, useCallback } from 'react';
+import { FunctionComponent, useState, useCallback, useMemo } from 'react';
 import { Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import sleep from '@/utils/sleep';
 import ComicItem from '@/components/ComicItem';
@@ -8,14 +8,16 @@ import useSWR from 'swr';
 import { $List, Comic } from 'types:comic';
 import Loading from '@/components/Loading';
 import { BasicResponse } from 'types:response';
+import useDecryptImg from '@/hooks/useDecryptImg';
 
 interface OverviewProps {}
 
 const Overview: FunctionComponent<OverviewProps> = () => {
   const [refreshing, setRefreshing] = useState(false);
+  const [list, setList] = useState<Comic[]>([]);
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-
     sleep(2000).then(() => setRefreshing(false));
   }, []);
 
@@ -27,7 +29,7 @@ const Overview: FunctionComponent<OverviewProps> = () => {
   if (isLoading) return <Loading />;
   if (error) return <Text>error</Text>;
   const {
-    data: { data: list, hasMore, total },
+    data: { data: remoteList, hasMore, total },
   } = data!;
 
   return (
@@ -36,17 +38,20 @@ const Overview: FunctionComponent<OverviewProps> = () => {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
-      {list.map(({ title, id, authors, tags }) => (
-        <ComicItem
-          key={id}
-          name={title}
-          authors={authors}
-          tags={tags}
-          imgPath={require('@/assets/images/00002.jpg')}
-          // @ts-expect-error: stupid typescript type generate for navigate
-          onPress={() => navigation.navigate<any>('Comic')}
-        />
-      ))}
+      {remoteList.map(({ title, id, authors, tags, cover }) => {
+        return (
+          <ComicItem
+            key={id}
+            id={id}
+            name={title}
+            authors={authors}
+            tags={tags}
+            cover={cover}
+            // @ts-expect-error: stupid typescript type generate for navigate
+            onPress={() => navigation.navigate<any>('Comic')}
+          />
+        );
+      })}
       <Pagination total={total} current={1} />
     </ScrollView>
   );

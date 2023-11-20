@@ -11,18 +11,13 @@ interface BasicLayoutProps extends PropsWithChildren {
   navigation: NavigationProp<ReactNavigation.RootParamList>;
 }
 
+const CacheTab: Record<string, any> = {
+  Overview: <Overview />,
+  Settings: <Settings />,
+};
+
 const TabScreen = ({ choose }: any) => {
-  switch (choose) {
-    case 'Overview':
-      return <Overview />;
-
-    case 'Settings':
-      return <Settings />;
-
-    default:
-      console.warn('unknown tab');
-      return null;
-  }
+  return CacheTab[choose] || null;
 };
 
 const BasicLayout: FunctionComponent<BasicLayoutProps> = ({ navigation }) => {
