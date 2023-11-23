@@ -18,7 +18,7 @@ import px2dp from '@/utils/ScreenUtils';
 
 interface OverviewProps {}
 
-const eachPageCount = 5;
+const eachPageCount = 10;
 
 const Overview: FunctionComponent<OverviewProps> = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -39,30 +39,6 @@ const Overview: FunctionComponent<OverviewProps> = () => {
   } = data!;
 
   return (
-    // <ScrollView
-    //   style={styles.viewInner}
-    // >
-    //   {remoteList.map(({ title, id, authors, tags, cover }) => {
-    //     return (
-    //       <ComicItem
-    //         key={id}
-    //         id={id}
-    //         name={title}
-    //         authors={authors}
-    //         tags={tags}
-    //         cover={cover}
-    //         // @ts-expect-error: stupid typescript type generate for navigate
-    //         onPress={() => navigation.navigate<any>('Comic')}
-    //       />
-    //     );
-    //   })}
-    //   <Pagination
-    //     total={total}
-    //     current={currentPage}
-    //     eachPageCount={eachPageCount}
-    //     onChange={setCurrentPage}
-    //   />
-    // </ScrollView>
     <FlatList
       style={styles.viewInner}
       data={remoteList}
@@ -78,6 +54,7 @@ const Overview: FunctionComponent<OverviewProps> = () => {
           onPress={() => navigation.navigate<any>('Comic')}
         />
       )}
+      windowSize={5}
       ListFooterComponent={() => (
         <Pagination
           total={total}

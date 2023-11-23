@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     width: '100%',
-    paddingBottom: px2dp(30),
+    paddingBottom: px2dp(45),
   },
   paginationButtonWrapper: {
     display: 'flex',

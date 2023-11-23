@@ -4,7 +4,7 @@ import TagList from '../TagList';
 import px2dp from '@/utils/ScreenUtils';
 import { Image } from '@rneui/base';
 import useDecryptImg from '@/hooks/useDecryptImg';
-import Loading from '../Loading';
+import ComicItemImage from './components/Image';
 
 interface ComicItemProps extends Partial<View> {
   name: string;
@@ -39,16 +39,7 @@ const ComicItem: FunctionComponent<ComicItemProps> = ({
         style={styles.leftImgWrapper}
         onPress={onPress}
         activeOpacity={0.7}>
-        {uri.length ? (
-          <Image
-            source={{
-              uri,
-            }}
-            style={styles.leftImg}
-          />
-        ) : (
-          <View></View>
-        )}
+        <ComicItemImage uri={uri} />
       </TouchableOpacity>
       <View style={styles.rightInfo}>
         <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
