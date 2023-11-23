@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: px2dp(12),
     paddingVertical: px2dp(8),
     marginRight: px2dp(8),
+    marginVertical: px2dp(8),
   },
   text: {
     color: '#fff',

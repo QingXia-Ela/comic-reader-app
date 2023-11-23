@@ -50,13 +50,10 @@ const Overview: FunctionComponent<OverviewProps> = () => {
       renderItem={({ item }) => (
         <ComicItem
           key={item.id}
-          id={item.id}
           name={item.title}
-          authors={item.authors}
-          tags={item.tags}
-          cover={item.cover}
+          {...item}
           // @ts-expect-error: stupid typescript type generate for navigate
-          onPress={() => navigation.navigate<any>('Comic')}
+          onPress={() => navigation.navigate<any>(`Comic`, { id: item.id })}
         />
       )}
       windowSize={5}

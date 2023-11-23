@@ -88,11 +88,9 @@ const SettingsScreen: FunctionComponent = () => {
 
 const Settings: FunctionComponent<SettingsProps> = () => {
   // settings
-
   return (
     <View style={styles.container}>
       <SettingsScreen />
-      {/* <Text style={{ color: 'white' }}>test</Text> */}
     </View>
   );
 };

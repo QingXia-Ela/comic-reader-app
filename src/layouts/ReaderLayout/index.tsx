@@ -1,5 +1,3 @@
-import useCurrentTime from '@/hooks/useCurrentTime';
-import px2dp, { deviceHeight, deviceWidth } from '@/utils/ScreenUtils';
 import { Component, createContext, useState, useEffect, memo } from 'react';
 import {
   StyleSheet,
@@ -15,12 +13,8 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import Config from 'react-native-config';
-import FastImage from 'react-native-fast-image';
-import ImageZoom from 'react-native-image-pan-zoom';
 import PageTip from './components/PageTip';
 import ReaderMenu from './components/ReaderMenu';
-import debounce from 'lodash/debounce';
-import { throttle } from 'lodash';
 import ImgList from './components/ImgList';
 import $reader, { reset, showPage } from '@/store/reader';
 import { useStore } from '@nanostores/react';

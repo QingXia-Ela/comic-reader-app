@@ -36,13 +36,14 @@ NetInfo.fetch().then(changeConnection);
 async function decryptImgFetcher(uri: string, baseURL: string, key = storeKey) {
   const decryptImgUrl = `${RNFS.ExternalCachesDirectoryPath}${uri}`;
   const bufPath = `${decryptImgUrl}.buf`;
+  const RNDecryptImgUrl = `file://${decryptImgUrl}`;
 
   // local cache check
   const curTime = +new Date();
   try {
     const state = await RNFS.stat(decryptImgUrl);
     if (state.isFile() && (state.mtime > curTime - CACHE_TIME || !online)) {
-      return decryptImgUrl;
+      return RNDecryptImgUrl;
     }
   } catch (e) {}
 
@@ -78,7 +79,7 @@ async function decryptImgFetcher(uri: string, baseURL: string, key = storeKey) {
     });
   });
 
-  return decryptImgUrl;
+  return RNDecryptImgUrl;
 }
 
 /**
@@ -95,20 +96,23 @@ function useDecryptImg(sourceUri: string, key = storeKey) {
     [error, setError] = useState<string>(),
     [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (key) {
-      decryptImgFetcher(sourceUri, baseURL, key)
-        .then((uri) => {
-          setUri(uri);
-        })
-        .catch((e) => {
-          setError(e.message);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }
-  }, []);
+  if (
+    uri === '' &&
+    key &&
+    sourceUri.split('/').length > 2 &&
+    !sourceUri.includes('undefined')
+  ) {
+    decryptImgFetcher(sourceUri, baseURL, key)
+      .then((uri) => {
+        setUri(uri);
+      })
+      .catch((e) => {
+        setError(e.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
 
   return {
     uri,

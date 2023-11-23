@@ -1,5 +1,3 @@
-import $settings from '@/store/settings';
-import { useStore } from '@nanostores/react';
 import { FunctionComponent, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 
@@ -8,11 +6,10 @@ interface ComicItemImageProps {
 }
 
 const ComicItemImage: FunctionComponent<ComicItemImageProps> = ({ uri }) => {
-  const { ImageDecryptKey } = useStore($settings);
   return uri.length ? (
     <Image
       source={{
-        uri: `${ImageDecryptKey ? `file://` : ''}${uri}`,
+        uri,
       }}
       style={styles.leftImg}
     />

@@ -1,7 +1,7 @@
 import { Iconfont } from '@/assets/font';
 import Tag from '@/components/Tag';
 import px2dp from '@/utils/ScreenUtils';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import {
   FunctionComponent,
   useCallback,
@@ -18,13 +18,18 @@ import {
   Button,
 } from 'react-native';
 import { Image } from '@rneui/base';
+import { useComicDetail } from '@/api/models/comic';
+import Loading from '@/components/Loading';
+import FetchFailText from '@/components/FetchFailText';
+import useDecryptImg from '@/hooks/useDecryptImg';
+import { initComicInfo } from '@/store/reader';
 
 const TagView = ({
   name = '',
   tags = [],
 }: {
   name: string;
-  tags: string[];
+  tags?: string[];
 }) => {
   return (
     <View style={tagViewStyles.tagWrapper}>
@@ -53,25 +58,51 @@ const tagViewStyles = StyleSheet.create({
 });
 
 interface ComicDetailLayoutProps {}
+
+interface ComicDetailParams {
+  id: string;
+}
+
 const ComicDetailLayout: FunctionComponent<ComicDetailLayoutProps> = () => {
   const [isFavorite, setIsFavorite] = useState(false);
-  const title = 'NoyAcg | [エゾクロテン (宮野木ジジ)] わるい子晴ちん 暫定版';
-  const tags = ['百合'],
-    authors = ['mutou-koucha', 'mignon'];
+
+  // const navigation = useNavigation();
+  const { params } = useRoute<RouteProp<{ params: ComicDetailParams }>>();
 
   const navigation = useNavigation();
+
+  const { data, error, isLoading } = useComicDetail(params?.id);
+
+  const { title, tags, authors, cover } = data?.data || {};
+
+  const { uri } = useDecryptImg(`/img/${params?.id}/${cover}`);
+
+  data?.data.imgList.length && initComicInfo(data?.data.imgList.length);
+
+  if (isLoading) return <Loading />;
+  if (error || !data) return <FetchFailText />;
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.comicDetailWrapper}>
-        <Image
-          style={styles.img}
-          source={require('@/assets/images/00002.jpg')}
-        />
+        <View style={styles.img}>
+          {uri.length ? (
+            <Image
+              style={{
+                objectFit: 'contain',
+                height: '100%',
+              }}
+              source={{
+                uri,
+              }}
+            />
+          ) : null}
+        </View>
         <Text style={styles.title}>{title}</Text>
         <TagView name="Authors:" tags={authors} />
         <TagView name="Tags:" tags={tags} />
         <TouchableOpacity
+          // @ts-expect-error: router valid navigate
           onPress={() => navigation.navigate('Reader')}
           style={[styles.baiscButton, styles.readButton]}>
           <Text style={{ color: '#fff', fontSize: px2dp(26) }}>Read</Text>
