@@ -1,5 +1,7 @@
 /**
  * Basic XOR decryption
+ *
+ * @deprecated TODO!: Use Java vanilla XOR decryption method
  */
 export default function xorCrypto(a: Uint8Array, b: string) {
   const result = new Uint8Array(a.length);
@@ -11,6 +13,8 @@ export default function xorCrypto(a: Uint8Array, b: string) {
 
 /**
  * Async XOR decryption
+ *
+ * @deprecated TODO!: Use Java vanilla XOR decryption method
  */
 export async function asyncXorCrypto(
   a: Uint8Array,

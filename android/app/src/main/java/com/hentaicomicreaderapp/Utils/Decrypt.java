@@ -5,9 +5,10 @@ import com.facebook.react.bridge.ReactMethod;
 public class Decrypt {
     public static byte[] xorDecrypt(byte[] arr, String key) {
         byte[] ret = new byte[arr.length];
+        int keyLen = key.length();
 
         for (int i = 0; i < arr.length; i++) {
-            ret[i] = (byte) (arr[i] ^ key.getBytes()[i % key.getBytes().length]);
+            ret[i] = (byte) (arr[i] ^ key.charAt(i % keyLen));
         }
 
         return ret;

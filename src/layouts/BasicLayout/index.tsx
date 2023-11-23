@@ -1,4 +1,4 @@
-import { FunctionComponent, PropsWithChildren, useState } from 'react';
+import { FunctionComponent, PropsWithChildren, useState, memo } from 'react';
 import { View, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import BottomLink from './components/BottomLink';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
@@ -11,23 +11,32 @@ interface BasicLayoutProps extends PropsWithChildren {
   navigation: NavigationProp<ReactNavigation.RootParamList>;
 }
 
-const CacheTab: Record<string, any> = {
-  Overview: <Overview />,
-  Settings: <Settings />,
-};
-
 const TabScreen = ({ choose }: any) => {
-  return CacheTab[choose] || null;
+  return (
+    <View style={{ flex: 1 }}>
+      <View
+        style={{
+          display: choose === 'Overview' ? 'flex' : 'none',
+          height: '100%',
+        }}>
+        <Overview />
+      </View>
+      <View
+        style={{
+          display: choose === 'Settings' ? 'flex' : 'none',
+          height: '100%',
+        }}>
+        <Settings />
+      </View>
+    </View>
+  );
 };
 
 const BasicLayout: FunctionComponent<BasicLayoutProps> = ({ navigation }) => {
   const [tab, setTab] = useState('Overview');
-  const a = useDecryptImg('/img/998543/00001.jpg');
   return (
     <View style={styles.viewWrapper}>
-      <View style={{ flex: 1 }}>
-        <TabScreen choose={tab} />
-      </View>
+      <TabScreen choose={tab} />
       <View style={styles.viewGuide}>
         <BottomLink onTabChange={setTab} />
       </View>

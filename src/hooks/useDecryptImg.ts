@@ -2,11 +2,8 @@ import $settings from '@/store/settings';
 import { useEffect, useState } from 'react';
 import useBaseUrl from './useBaseUrl';
 import RNFS from 'react-native-fs';
-import base64ToUint8Array from '@/utils/file/base64ToU8Array';
-import xorCrypto, { asyncXorCrypto } from '@/utils/decrypt/xorDecrypt';
-import uint8ArrayToBase64 from '@/utils/file/u8ArrayToBase64';
 import NetInfo, { NetInfoState } from '@react-native-community/netinfo';
-import { ExpensiveTaskThreadPool } from '@/native-modules';
+import { ExpensiveTaskThreadPool, ImgMethods } from '@/native-modules';
 
 // 5min cache
 const CACHE_TIME = 5 * 60 * 1000;
@@ -44,11 +41,7 @@ async function decryptImgFetcher(uri: string, baseURL: string, key = storeKey) {
   const curTime = +new Date();
   try {
     const state = await RNFS.stat(decryptImgUrl);
-    if (
-      false &&
-      state.isFile() &&
-      (state.mtime > curTime - CACHE_TIME || !online)
-    ) {
+    if (state.isFile() && (state.mtime > curTime - CACHE_TIME || !online)) {
       return decryptImgUrl;
     }
   } catch (e) {}
@@ -78,15 +71,12 @@ async function decryptImgFetcher(uri: string, baseURL: string, key = storeKey) {
     cacheable: true,
   }).promise;
 
-  const u8 = base64ToUint8Array(await RNFS.readFile(bufPath, 'base64'));
-
-  const arr = await new Promise<Uint8Array>((resolve) => {
+  await new Promise<void>((resolve) => {
     ExpensiveTaskThreadPool.run(() => {
-      resolve(xorCrypto(u8, key));
+      ImgMethods.decryptAndWriteFile(bufPath, decryptImgUrl, key);
+      resolve();
     });
   });
-
-  await RNFS.writeFile(decryptImgUrl, uint8ArrayToBase64(arr), 'base64');
 
   return decryptImgUrl;
 }

@@ -7,4 +7,15 @@ export interface ExpensiveTaskThreadPoolType {
 const ExpensiveTaskThreadPool: ExpensiveTaskThreadPoolType =
   NativeModules.ExpensiveTaskThreadPool;
 
-export { ExpensiveTaskThreadPool };
+export interface ImgMethodsType {
+  /** Decrypt Img, and save to `decryptImgUrl` */
+  decryptAndWriteFile(
+    bufPath: string,
+    decryptImgUrl: string,
+    key: string,
+  ): void;
+}
+
+const ImgMethods: ImgMethodsType = NativeModules.ImgMethods;
+
+export { ExpensiveTaskThreadPool, ImgMethods };

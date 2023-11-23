@@ -1,11 +1,12 @@
-import { FunctionComponent, useState, useCallback, useMemo } from 'react';
 import {
-  Text,
-  StyleSheet,
-  ScrollView,
-  RefreshControl,
-  FlatList,
-} from 'react-native';
+  FunctionComponent,
+  useState,
+  useCallback,
+  useMemo,
+  memo,
+  useEffect,
+} from 'react';
+import { Text, StyleSheet, FlatList } from 'react-native';
 import sleep from '@/utils/sleep';
 import ComicItem from '@/components/ComicItem';
 import Pagination from '@/components/Pagination';
@@ -28,6 +29,10 @@ const Overview: FunctionComponent<OverviewProps> = () => {
   const { data, error, isLoading } = useSWR<BasicResponse<$List>>(
     `/list?count=${eachPageCount}&offset=${(currentPage - 1) * eachPageCount}`,
   );
+
+  useEffect(() => {
+    console.log('render');
+  }, []);
 
   if (isLoading) return <Loading />;
   if (error)
@@ -81,4 +86,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Overview;
+export default memo(Overview);

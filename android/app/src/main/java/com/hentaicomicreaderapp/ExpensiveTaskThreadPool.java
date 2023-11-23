@@ -19,8 +19,8 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
 
 public class ExpensiveTaskThreadPool extends ReactContextBaseJavaModule {
-    int coreNum = Runtime.getRuntime().availableProcessors();
-    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(coreNum - 1, coreNum - 1, 1, TimeUnit.MINUTES, new LinkedBlockingQueue());
+    public static final int coreNum = Runtime.getRuntime().availableProcessors();
+    public static final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(coreNum - 1, coreNum - 1, 1, TimeUnit.MINUTES, new LinkedBlockingQueue());
 
     @Nonnull
     @Override
@@ -31,11 +31,6 @@ public class ExpensiveTaskThreadPool extends ReactContextBaseJavaModule {
     @ReactMethod
     public void run(Callback task) {
         threadPoolExecutor.submit(() -> {
-            try {
-                Thread.sleep(Long.parseLong("5000"));
-            } catch (InterruptedException e) {
-                System.out.println(e.getMessage());
-            }
             task.invoke();
         });
     }
