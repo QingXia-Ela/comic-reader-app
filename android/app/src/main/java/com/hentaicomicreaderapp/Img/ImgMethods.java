@@ -1,8 +1,12 @@
 package com.hentaicomicreaderapp.Img;
 
-import com.facebook.react.bridge.Callback;
+import android.annotation.SuppressLint;
+import android.widget.Toast;
+
+import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.hentaicomicreaderapp.Utils.Decrypt;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -14,6 +18,13 @@ import java.io.FileReader;
 import javax.annotation.Nonnull;
 
 public class ImgMethods extends ReactContextBaseJavaModule {
+    private static ReactApplicationContext reactContext;
+
+    public ImgMethods(ReactApplicationContext context) {
+        super(context);
+        reactContext = context;
+    }
+
     @Nonnull
     @Override
     public String getName() {
@@ -25,17 +36,18 @@ public class ImgMethods extends ReactContextBaseJavaModule {
         File buf = new File(bufPath);
         File dec = new File(decryptedImgPath);
 
-        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(buf));
+        FileInputStream fis = new FileInputStream(buf);
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(dec));
 
-        byte[] buffer = new byte[16 * key.length()];
 
-        int len;
-        while ((len=bis.read(buffer)) != -1) {
-            bos.write(buffer, 0, len);
-        }
+        byte[] res = new byte[(int) buf.length()];
+        fis.read(res);
+
+        res = Decrypt.xorDecrypt(res, key);
+
+        bos.write(res);
 
         bos.close();
-        bis.close();
+        fis.close();
     }
 }

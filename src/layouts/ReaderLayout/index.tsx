@@ -21,48 +21,8 @@ import { useStore } from '@nanostores/react';
 
 interface ReaderLayoutProps {}
 
-const heightMap = new Array(400).fill(0);
-let heighestImg = 0;
-
-const RenderItem = ({
-  index,
-  onPress,
-}: {
-  index: number;
-  onPress?: () => void;
-}) => {
-  const [height, setHeight] = useState(heightMap[index] || heighestImg);
-  useEffect(() => {
-    if (height > 0) {
-      heightMap[index] = height;
-      if (height > heighestImg) {
-        heighestImg = height;
-      }
-    }
-  }, [height]);
-
-  return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <Image
-        style={[styles.img, { height }]}
-        onLoad={({ nativeEvent }) => {
-          setHeight(
-            nativeEvent.source.height *
-              (Dimensions.get('window').width / nativeEvent.source.width),
-          );
-        }}
-        source={{
-          uri: `${Config.BACKEND_API}/img/998543/${index
-            .toString()
-            .padStart(5, '0')}.jpg`,
-        }}
-      />
-    </TouchableWithoutFeedback>
-  );
-};
-
 function ReaderLayout() {
-  const { showMenu, totalPage } = useStore($reader);
+  const { showMenu, totalPage, title } = useStore($reader);
   const realPage = showPage.get();
   useEffect(() => {
     return () => {
@@ -73,10 +33,7 @@ function ReaderLayout() {
   return (
     <SafeAreaView style={styles.container}>
       <TouchableWithoutFeedback>
-        <ReaderMenu
-          title="NoyAcg | [エゾクロテン (宮野木ジジ)] わるい子晴ちん 暫定版
-        (アイドルマスター シンデレラガールズ) [中国翻訳] [DL版]"
-          show={showMenu}>
+        <ReaderMenu title={title} show={showMenu}>
           <ImgList />
         </ReaderMenu>
       </TouchableWithoutFeedback>

@@ -77,7 +77,17 @@ const ComicDetailLayout: FunctionComponent<ComicDetailLayoutProps> = () => {
 
   const { uri } = useDecryptImg(`/img/${params?.id}/${cover}`);
 
-  data?.data.imgList.length && initComicInfo(data?.data.imgList.length);
+  const handleRead = useCallback(() => {
+    data?.data.imgList.length &&
+      initComicInfo({
+        ...data.data,
+        showMenu: false,
+        currentPage: 0,
+        totalPage: data.data.imgList.length,
+      });
+    // @ts-expect-error: router valid navigate
+    navigation.navigate('Reader');
+  }, [data]);
 
   if (isLoading) return <Loading />;
   if (error || !data) return <FetchFailText />;
@@ -102,8 +112,7 @@ const ComicDetailLayout: FunctionComponent<ComicDetailLayoutProps> = () => {
         <TagView name="Authors:" tags={authors} />
         <TagView name="Tags:" tags={tags} />
         <TouchableOpacity
-          // @ts-expect-error: router valid navigate
-          onPress={() => navigation.navigate('Reader')}
+          onPress={handleRead}
           style={[styles.baiscButton, styles.readButton]}>
           <Text style={{ color: '#fff', fontSize: px2dp(26) }}>Read</Text>
         </TouchableOpacity>

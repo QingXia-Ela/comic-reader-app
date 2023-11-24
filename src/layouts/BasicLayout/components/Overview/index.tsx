@@ -7,7 +7,6 @@ import {
   useEffect,
 } from 'react';
 import { Text, StyleSheet, FlatList } from 'react-native';
-import sleep from '@/utils/sleep';
 import ComicItem from '@/components/ComicItem';
 import Pagination from '@/components/Pagination';
 import { useNavigation } from '@react-navigation/native';

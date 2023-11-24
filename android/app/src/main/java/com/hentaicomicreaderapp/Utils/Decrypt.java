@@ -8,7 +8,7 @@ public class Decrypt {
         int keyLen = key.length();
 
         for (int i = 0; i < arr.length; i++) {
-            ret[i] = (byte) (arr[i] ^ key.charAt(i % keyLen));
+            ret[i] = (byte) (arr[i] ^ key.charAt(i % key.length()));
         }
 
         return ret;

@@ -26,7 +26,7 @@ public class ImgMethodsPackage implements ReactPackage {
     ) {
         List<NativeModule> modules = new ArrayList<>();
 
-        modules.add(new ImgMethods());
+        modules.add(new ImgMethods(reactContext));
 
         return modules;
     }

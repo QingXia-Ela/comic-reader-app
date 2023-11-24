@@ -1,5 +1,7 @@
+import useDecryptImg from '@/hooks/useDecryptImg';
 import $reader, { changePage, toggleMenu } from '@/store/reader';
 import { useStore } from '@nanostores/react';
+import FastImage from 'react-native-fast-image';
 import {
   FunctionComponent,
   forwardRef,
@@ -14,47 +16,50 @@ import {
   TouchableWithoutFeedback,
   Image,
   Dimensions,
+  View,
+  Text,
 } from 'react-native';
-import Config from 'react-native-config';
+import { deviceHeight } from '@/utils/ScreenUtils';
 
 interface ImgListProps {}
 
-const heightMap = new Array(400).fill(0);
-let heighestImg = 0;
+const heightMap = new Array(400).fill(deviceHeight / 2);
 
 const RenderItem = ({
   index,
   onPress,
+  imgPath,
 }: {
   index: number;
   onPress?: () => void;
+  imgPath: string;
 }) => {
-  const [height, setHeight] = useState(heightMap[index] || heighestImg);
+  const [height, setHeight] = useState(heightMap[index]);
+  const { uri } = useDecryptImg(imgPath);
   useEffect(() => {
-    if (height > 0) {
+    if (height > 1) {
       heightMap[index] = height;
-      if (height > heighestImg) {
-        heighestImg = height;
-      }
     }
-  }, [height]);
+  }, [height, uri]);
 
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-      <Image
-        style={[styles.img, { height }]}
-        onLoad={({ nativeEvent }) => {
-          setHeight(
-            nativeEvent.source.height *
-              (Dimensions.get('window').width / nativeEvent.source.width),
-          );
-        }}
-        source={{
-          uri: `${Config.BACKEND_API}/img/998543/${index
-            .toString()
-            .padStart(5, '0')}.jpg`,
-        }}
-      />
+      {uri.length ? (
+        <Image
+          style={[styles.img, { height }]}
+          source={{
+            uri,
+          }}
+          onLoad={({ nativeEvent }) => {
+            setHeight(
+              nativeEvent.source.height *
+                (Dimensions.get('window').width / nativeEvent.source.width),
+            );
+          }}
+        />
+      ) : (
+        <View style={{ height: '100%' }}></View>
+      )}
     </TouchableWithoutFeedback>
   );
 };
@@ -73,10 +78,22 @@ class StaticNamespace {
 
 let scrolling = false;
 
+function calcLayout(_: any, index: number) {
+  let offset = 0;
+  for (let i = 0; i < index; i++) {
+    offset += heightMap[i];
+  }
+  return {
+    length: heightMap[index],
+    offset,
+    index,
+  };
+}
+
 const ImgList: FunctionComponent<ImgListProps> = forwardRef<
   VirtualizedList<any>
 >(function ({}, outerRef) {
-  const { currentPage, totalPage } = useStore($reader);
+  const { currentPage, totalPage, imgList, id } = useStore($reader);
   const listRef = useRef<VirtualizedList<any>>(null);
   useEffect(() => {
     if (!scrolling)
@@ -86,7 +103,7 @@ const ImgList: FunctionComponent<ImgListProps> = forwardRef<
   }, [currentPage]);
   // ref
   return (
-    <VirtualizedList
+    <VirtualizedList<string>
       ref={(ref) => {
         // @ts-expect-error: current ref can change value
         listRef.current = ref;
@@ -96,22 +113,15 @@ const ImgList: FunctionComponent<ImgListProps> = forwardRef<
         }
       }}
       style={styles.container}
-      data={Array.from({ length: totalPage }).map((_, index) => index)}
-      renderItem={({ index }) => (
-        <CachedItem index={index + 1} onPress={toggleMenu} />
+      data={imgList}
+      renderItem={({ index, item }) => (
+        <CachedItem index={index + 1} imgPath={item} onPress={toggleMenu} />
       )}
-      getItem={({ index }) => index}
+      getItem={(imgList, index) => `/img/${id}/${imgList[index]}`}
       getItemCount={() => totalPage}
       keyExtractor={(item, index) => index.toString()}
       viewabilityConfig={StaticNamespace.prototype.viewConfig}
-      getItemLayout={(data, index) => {
-        const finalHeight = heightMap[index] || heighestImg;
-        return {
-          length: finalHeight,
-          offset: finalHeight * index,
-          index,
-        };
-      }}
+      getItemLayout={calcLayout}
       onScrollBeginDrag={() => (scrolling = true)}
       onMomentumScrollEnd={() => (scrolling = false)}
       onViewableItemsChanged={({ viewableItems }) => {
@@ -119,10 +129,7 @@ const ImgList: FunctionComponent<ImgListProps> = forwardRef<
           changePage(viewableItems[0].index || 0);
         }
       }}
-      onScrollToIndexFailed={() => {
-        console.log('failed');
-      }}
-      windowSize={7}
+      windowSize={5}
     />
   );
 });

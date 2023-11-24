@@ -1,6 +1,7 @@
 import { atom, computed } from 'nanostores';
+import { ComicDetail } from 'types:comic';
 
-interface ReaderState {
+interface ReaderState extends ComicDetail {
   /**
    * 是否展示操作菜单
    */
@@ -21,13 +22,19 @@ const DEFAULT_DATA: ReaderState = {
   showMenu: false,
   currentPage: 0,
   totalPage: 56,
+  imgList: [],
+  authors: [],
+  description: '',
+  id: -1,
+  tags: [],
+  title: '',
+  cover: '',
 };
 
 const $reader = atom<ReaderState>(DEFAULT_DATA);
 
-export function initComicInfo(totalPage: number) {
-  const data = $reader.get();
-  $reader.set({ ...data, totalPage });
+export function initComicInfo(comic: ReaderState) {
+  $reader.set({ ...DEFAULT_DATA, ...comic });
 }
 
 export function toggleMenu() {

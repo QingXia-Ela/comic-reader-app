@@ -42,7 +42,12 @@ async function decryptImgFetcher(uri: string, baseURL: string, key = storeKey) {
   const curTime = +new Date();
   try {
     const state = await RNFS.stat(decryptImgUrl);
-    if (state.isFile() && (state.mtime > curTime - CACHE_TIME || !online)) {
+    if (
+      false &&
+      process.env.NODE_ENV === 'production' &&
+      state.isFile() &&
+      (state.mtime > curTime - CACHE_TIME || !online)
+    ) {
       return RNDecryptImgUrl;
     }
   } catch (e) {}
